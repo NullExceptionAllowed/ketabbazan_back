@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
   'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+      'ENGINE': 'django.db.backends.mysql',
       'NAME': 'projdb',
-      'HOST': 'localhost',
-      'USER': 'postgres',
+      'HOST': '98522148.mysql.pythonanywhere-services.com',
+      'USER': '98522148',
       'PASSWORD': 'admin2000',
       'PORT': '5432',
   }
