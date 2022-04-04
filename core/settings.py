@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'drf_yasg',
     'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
     'accounts.apps.AccountsConfig',
+    'read_book',
+    'rest_framework',
+    'rest_framework.authtoken',    
 ]
 
 
@@ -81,15 +83,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# DATABASES = {
+#   'default': {
+#       'ENGINE': 'django.db.backends.mysql',
+#       'NAME': '98522148$projdb',
+#       'HOST': '98522148.mysql.pythonanywhere-services.com',
+#       'USER': '98522148',
+#       'PASSWORD': 'admin2000',
+#   }
+# }
+
 DATABASES = {
   'default': {
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': '98522148$projdb',
-      'HOST': '98522148.mysql.pythonanywhere-services.com',
-      'USER': '98522148',
+      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+      'NAME': 'projdb',
+      'HOST': 'localhost',
+      'USER': 'postgres',
       'PASSWORD': 'admin2000',
+      'PORT': '5432',
   }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -139,3 +153,7 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
