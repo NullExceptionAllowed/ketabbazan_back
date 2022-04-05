@@ -85,11 +85,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
   'default': {
+      #Common Config
       'ENGINE': 'django.db.backends.mysql',
       'NAME': '98522148$projdb',
-      'HOST': '98522148.mysql.pythonanywhere-services.com',
       'USER': '98522148',
-      'PASSWORD': 'admin2000',
+      'PASSWORD': 'admin2000',  
+          
+      #Server Config
+      #'HOST': '98522148.mysql.pythonanywhere-services.com',
+
+      #Develop Config
+      'HOST': 'localhost',
+      'PORT': '3306',
   }
 }
 
