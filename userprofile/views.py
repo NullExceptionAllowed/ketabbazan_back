@@ -1,6 +1,9 @@
+import os
+
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import renderer_classes
 from rest_framework.views import APIView
 from .custom_renders import JPEGRenderer
 from rest_framework.response import Response
@@ -18,6 +21,7 @@ class Profileimage(generics.RetrieveAPIView):
     renderer_classes = [JPEGRenderer]
     permission_classes = [IsAuthenticated, ]
 
+
     def get(self,request):
         image=request.user.profile.image
         return Response(image, content_type='image/jpeg')
@@ -27,8 +31,21 @@ class Profileimage(generics.RetrieveAPIView):
         image=request.FILES['image']
         user=User.objects.get(email=request.user.email)
         user.profile.image=image
-        user.save()
+        user.profile.save()
+        os.rename(f"media/profileimages/{image}", f"media/profileimages/{request.user.username}.jpg")
+        user.profile.image = f"media/profileimages/{request.user.username}.jpg"
+        user.profile.save()
         return Response(status=status.HTTP_200_OK)
+
+
+    def delete(self,request):
+        if(request.user.profile.image=="media/profileimages/default.jpg"):
+            return Response(data={"message": "default image can not deleted"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            os.remove(f"media/profileimages/{request.user.username}.jpg")
+            request.user.profile.image="media/profileimages/default.jpg"
+            request.user.profile.save()
+            return Response(data={"message": "image deleted"}, status=status.HTTP_200_OK)
 
 
 class Profileinfo(APIView):
