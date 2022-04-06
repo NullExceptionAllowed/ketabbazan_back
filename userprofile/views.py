@@ -28,14 +28,25 @@ class Profileimage(generics.RetrieveAPIView):
 
 
     def post(self,request):
-        image=request.FILES['image']
-        user=User.objects.get(email=request.user.email)
-        user.profile.image=image
-        user.profile.save()
-        os.rename(f"media/profileimages/{image}", f"media/profileimages/{request.user.username}.jpg")
-        user.profile.image = f"media/profileimages/{request.user.username}.jpg"
-        user.profile.save()
-        return Response(status=status.HTTP_200_OK)
+        if (request.user.profile.image == "media/profileimages/default.jpg"):
+            image=request.FILES['image']
+            user=User.objects.get(email=request.user.email)
+            user.profile.image=image
+            user.profile.save()
+            os.rename(f"media/profileimages/{image}", f"media/profileimages/{request.user.username}.jpg")
+            user.profile.image = f"media/profileimages/{request.user.username}.jpg"
+            user.profile.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            os.remove(f"media/profileimages/{request.user.username}.jpg")
+            image = request.FILES['image']
+            user = User.objects.get(email=request.user.email)
+            user.profile.image = image
+            user.profile.save()
+            os.rename(f"media/profileimages/{image}", f"media/profileimages/{request.user.username}.jpg")
+            user.profile.image = f"media/profileimages/{request.user.username}.jpg"
+            user.profile.save()
+            return Response(status=status.HTTP_200_OK)
 
 
     def delete(self,request):
@@ -57,10 +68,7 @@ class Profileinfo(APIView):
         born_date=request.data['born_date']
         request.user.profile.bio=bio
         request.user.profile.born_date=born_date
-        if(gender==1):
-            request.user.profile.gender=True
-        else:
-            request.user.profile.gender=False
+        request.user.profile.gender=gender
         request.user.profile.save()
         ser_profile=Profileserializer(request.data)
         return Response(ser_profile.data,status=status.HTTP_200_OK)
