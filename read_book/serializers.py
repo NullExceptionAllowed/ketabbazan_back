@@ -8,4 +8,5 @@ class BookInfoSerializer(serializers.Serializer):
     price = serializers.IntegerField()
     publisher = serializers.CharField(max_length=50)
     image_url = serializers.URLField()
-    created = serializers.DateTimeField(default=timezone.now)    
+    created = serializers.DateTimeField(default=timezone.now) 
+    pdf_url = serializers.URLField()  

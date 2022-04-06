@@ -9,6 +9,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=50)
     image_url = models.URLField()
     created = models.DateTimeField(default=timezone.now)
+    pdf_url = models.URLField(null=True)
 
     def __str__(self):
         formatter = 'Name: {:28} | Written by: {:8} | Price: {:6}'
