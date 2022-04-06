@@ -87,16 +87,16 @@ DATABASES = {
   'default': {
       #Common Config
       'ENGINE': 'django.db.backends.mysql',
-      'NAME': '98522148$projdb',
+      'NAME': '98522148$mydb',
       'USER': '98522148',
       'PASSWORD': 'admin2000',  
           
       #Server Config
-      'HOST': '98522148.mysql.pythonanywhere-services.com',
+    #   'HOST': '98522148.mysql.pythonanywhere-services.com',
 
       #Develop Config
-    #   'HOST': 'localhost',
-    #   'PORT': '3306',
+      'HOST': 'localhost',
+      'PORT': '3306',
   }
 }
 
