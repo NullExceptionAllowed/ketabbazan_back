@@ -1,12 +1,5 @@
 from django.db import models
 from django.utils import timezone
-import os
-import uuid
-
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('images', filename)
 
 class Book(models.Model):
     name = models.CharField(max_length=50)
@@ -14,7 +7,7 @@ class Book(models.Model):
     author = models.CharField(max_length=50)
     price = models.IntegerField()
     publisher = models.CharField(max_length=50)
-    book_image = models.ImageField(upload_to=get_file_path)
+    image_url = models.URLField()
     created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

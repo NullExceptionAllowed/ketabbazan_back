@@ -1,13 +1,5 @@
 from rest_framework import serializers
-from .models import Book
 from django.utils import timezone
-import os
-import uuid
-
-def get_file_path(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join('images', filename)
 
 class BookInfoSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=50)
@@ -15,5 +7,5 @@ class BookInfoSerializer(serializers.Serializer):
     author = serializers.CharField(max_length=50)
     price = serializers.IntegerField()
     publisher = serializers.CharField(max_length=50)
-    book_image = serializers.ImageField()
+    image_url = serializers.URLField()
     created = serializers.DateTimeField(default=timezone.now)    
