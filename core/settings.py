@@ -92,11 +92,11 @@ DATABASES = {
       'PASSWORD': 'admin2000',  
           
       #Server Config
-      #'HOST': '98522148.mysql.pythonanywhere-services.com',
+      'HOST': '98522148.mysql.pythonanywhere-services.com',
 
       #Develop Config
-      'HOST': 'localhost',
-      'PORT': '3306',
+    #   'HOST': 'localhost',
+    #   'PORT': '3306',
   }
 }
 
