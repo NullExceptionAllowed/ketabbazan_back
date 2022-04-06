@@ -36,20 +36,8 @@ GET /accounts/profile/
 POST /accounts/logout/
 ```
 
-#### Show newest books ids
+#### Show newest books information
 
 ```http
 GET /read_book/newest_books/
-```
-
-#### Show specific book information
-
-```http
-GET /info/<id>
-```
-
-#### Show specific book cover image
-
-```http
-GET /image/<id>
 ```
