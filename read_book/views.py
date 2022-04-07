@@ -6,6 +6,21 @@ from rest_framework import generics
 from read_book.custom_renderers import JPEGRenderer
 from .serializers import BookInfoSerializer
 
+class AllBooks(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        books = [book for book in Book.objects.all()]
+        books.sort(key = lambda x : x.created, reverse=True)
+        ans = []
+        for book in books:
+            book_serializer = BookInfoSerializer(instance=book)
+            data = book_serializer.data
+            data['id'] = book.id
+            ans.append(data)
+        return Response(ans)    
+
 class NewestBooks(APIView):
     authentication_classes = []
     permission_classes = []
