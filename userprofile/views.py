@@ -95,3 +95,14 @@ class AccountProfile(APIView):
     def get(self,request):
         ser_data=AccountProfileserializer(request.user)
         return Response(ser_data.data,status=status.HTTP_200_OK)
+
+
+class PasswordChange(APIView):
+    permission_classes = [IsAuthenticated, ]
+    def post(self,request):
+        if (request.user.check_password(request.data['old_password'])):
+            request.user.set_password(request.data['new_password'])
+            request.user.save()
+            return Response(data={"message":"new password set succesful"},status=status.HTTP_200_OK)
+        else:
+            return Response(data={"message":"old password is wrong"},status=status.HTTP_400_BAD_REQUEST)
