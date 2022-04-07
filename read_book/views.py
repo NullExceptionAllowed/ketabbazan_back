@@ -14,12 +14,12 @@ class NewestBooks(APIView):
         books = [book for book in Book.objects.all()]
         books.sort(key = lambda x : x.created, reverse=True)
         ans = []
-        for book in books:
+        for book in books[:10]:
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
             ans.append(data)
-        return Response(ans[:5])
+        return Response(ans)
 
 class PDFRetrieval(APIView):
     def get(self, request, id):
