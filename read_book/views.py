@@ -17,6 +17,7 @@ class NewestBooks(APIView):
         for book in books:
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
+            data['id'] = book.id
             ans.append(data)
         return Response(ans[:5])
 
@@ -24,3 +25,10 @@ class PDFRetrieval(APIView):
     def get(self, request, id):
         book = get_object_or_404(Book, id=id)    
         return Response(book.pdf_url)    
+
+class BookInfoRetrieval(APIView):
+    def get(self, request, id):
+        book = get_object_or_404(Book, id=id)
+        book_serializer = BookInfoSerializer(instance=book)
+        data = book_serializer.data
+        return Response({'book_info': data})        
