@@ -12,7 +12,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from accounts.models import User
 from wsgiref.util import FileWrapper
 from rest_framework import generics, viewsets
-from .serializers import Profileserializer, Profileserializerwithimage, ProfileImageserializer
+from .serializers import Profileserializer, Profileserializerwithimage, ProfileImageserializer, AccountProfileserializer
 from .models import Profile
 # Create your views here.
 
@@ -89,3 +89,9 @@ class Imageprofile(APIView):
         return Response({'info':ser_profile.data})
 
 
+class AccountProfile(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self,request):
+        ser_data=AccountProfileserializer(request.user)
+        return Response(ser_data.data,status=status.HTTP_200_OK)

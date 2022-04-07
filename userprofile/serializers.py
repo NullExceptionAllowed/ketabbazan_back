@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Profile
+from accounts.models import User
 
 class Profileserializer(serializers.ModelSerializer):
     class Meta:
@@ -18,5 +19,12 @@ class ProfileImageserializer(serializers.Serializer):
     gender=serializers.CharField(max_length=1)
     born_date=serializers.DateField()
     image=serializers.ImageField()
+
+class AccountProfileserializer(serializers.ModelSerializer):
+    profile=Profileserializer()
+    class Meta:
+        model=User
+        fields=('username', 'email', 'nickname', 'profile')
+
 
 
