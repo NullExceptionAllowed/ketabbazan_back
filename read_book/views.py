@@ -18,6 +18,7 @@ class AllBooks(APIView):
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
+            data['author'] = "، ".join(str(author) for author in book.author.all())
             ans.append(data)
         return Response(ans)    
 
@@ -33,6 +34,7 @@ class NewestBooks(APIView):
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
+            data['author'] = "، ".join(str(author) for author in book.author.all())
             ans.append(data)
         return Response(ans)
 

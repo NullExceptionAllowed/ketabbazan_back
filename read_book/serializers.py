@@ -4,7 +4,6 @@ from django.utils import timezone
 class BookInfoSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=50)
     summary = serializers.CharField(max_length=1000)
-    author = serializers.CharField(max_length=50)
     price = serializers.IntegerField()
     publisher = serializers.CharField(max_length=50)
     image_url = serializers.URLField()
