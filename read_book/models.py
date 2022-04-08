@@ -16,7 +16,7 @@ class Author(models.Model):
 class Book(models.Model):
     name = models.CharField(max_length=200)
     summary = models.TextField(max_length=1000)
-    author = models.ManyToManyField(Author, blank=True, null=True)
+    author = models.ManyToManyField(Author, blank=True)
     price = models.IntegerField()
     publisher = models.CharField(max_length=50)
     image_url = models.URLField()
