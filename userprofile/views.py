@@ -64,57 +64,71 @@ class Profileinfo(APIView):
         try:
             born_date = request.data['born_date']
         except:
-            born_date=None
+            born_date = None
+        try:
+            nickname = request.data['nickname']
+        except:
+            nickname = None
+        request.user.nickname=nickname
         request.user.profile.bio = bio
         request.user.profile.born_date = born_date
         if gender is None:
             request.user.profile.gender=None
         else:
             request.user.profile.gender = gender
+        request.user.save()
         request.user.profile.save()
         ser_profile=Profileserializer(request.data)
         return Response(ser_profile.data, status=status.HTTP_200_OK)
 
     def get(self, request):
-        ser_profile = Profileserializer(request.user.profile)
+        ser_profile = AccountProfileserializer(request.user)
         return Response(ser_profile.data, status=status.HTTP_200_OK)
 
 
 class Imageprofile(APIView):
     permission_classes = [IsAuthenticated, ]
 
-    def get(self,request):
+    def get(self, request):
         profile=request.user.profile
         ser_profile=ProfileImageserializer(instance=profile)
-        return Response({'info':ser_profile.data})
+        return Response({'info': ser_profile.data})
 
 
 class AccountProfile(APIView):
     permission_classes = [IsAuthenticated, ]
 
-    def get(self,request):
-        ser_data=AccountProfileserializer(request.user)
-        return Response(ser_data.data,status=status.HTTP_200_OK)
+    def get(self, request):
+        ser_data = AccountProfileserializer(request.user)
+        return Response(ser_data.data, status=status.HTTP_200_OK)
 
 
 class PasswordChange(APIView):
     permission_classes = [IsAuthenticated, ]
-    def post(self,request):
+    def post(self, request):
         if (request.user.check_password(request.data['old_password'])):
             request.user.set_password(request.data['new_password'])
             request.user.save()
-            return Response(data={"message":"new password set succesful"},status=status.HTTP_200_OK)
+            return Response(data={"message":"new password set successful"}, status=status.HTTP_200_OK)
         else:
-            return Response(data={"message":"old password is wrong"},status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"message":"old password is wrong"}, status=status.HTTP_400_BAD_REQUEST)
 
 class UsernameChange(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def post(self, request):
         new_username = request.data['username']
-        if(not User.objects.filter(username=new_username).exists()):
+        if(not User.objects.filter(username=new_username).exists() or new_username==request.user.username ):
             request.user.username = new_username
             request.user.save()
-            return Response(data={'message':'new username set sucseful'}, status=status.HTTP_200_OK)
+            return Response(data={'message':'new username set successful'}, status=status.HTTP_200_OK)
         else:
             return Response(data={'message':'this username already exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+class Profileimagelink(APIView):
+    permission_classes = [IsAuthenticated, ]
+    renderer_classes = [JPEGRenderer]
+
+    def get(self,request,image_name):
+        image=f"media\profileimages\{image_name}"
+        return Response(image, content_type='image/jpeg')
