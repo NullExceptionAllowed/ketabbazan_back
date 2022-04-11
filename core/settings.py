@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'read_book',
     'rest_framework',
-    'rest_framework.authtoken',    
+    'rest_framework.authtoken',
+
+    'search'
 ]
 
 
@@ -85,18 +87,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
   'default': {
-      #Common Config
-      'ENGINE': 'django.db.backends.mysql',
-      'NAME': '98522148$mydb',
-      'USER': '98522148',
-      'PASSWORD': 'admin2000',  
-          
-      #Server Config
-    #   'HOST': '98522148.mysql.pythonanywhere-services.com',
-
-      #Develop Config
-      'HOST': 'localhost',
-      'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'projdb',
+        'HOST': 'localhost',
+        'USER': 'postgres',
+        'PASSWORD': 'admin2000',
+        'PORT': '5432',
   }
 }
 
