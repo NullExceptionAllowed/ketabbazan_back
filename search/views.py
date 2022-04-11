@@ -17,7 +17,7 @@ class Booksearch(APIView):
             sort=int(request.query_params['sort'])
         except:
             sort=None
-        books = [book for book in Book.objects.filter(Q(name__contains=q) | Q(author__name__contains=q) | Q(genre__name__contains=q))]
+        books = [book for book in Book.objects.filter(Q(name__contains=q) | Q(author__name__contains=q) | Q(genre__name__contains=q)).distinct()]
         if(sort==1): #chippest books
             books.sort(key=lambda x: x.price, reverse=True)
         elif(sort==2): #most expensive books
