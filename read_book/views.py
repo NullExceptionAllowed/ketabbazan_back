@@ -34,7 +34,7 @@ class NewestBooks(APIView):
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
-            data['author'] = "، ".join(str(author) for author in book.author.all())
+            data['author'] = book.getwriters()
             ans.append(data)
         return Response(ans)
 
@@ -48,4 +48,6 @@ class BookInfoRetrieval(APIView):
         book = get_object_or_404(Book, id=id)
         book_serializer = BookInfoSerializer(instance=book)
         data = book_serializer.data
+        data['id'] = book.id
+        data['author'] = book.getwriters()
         return Response({'book_info': data})        
