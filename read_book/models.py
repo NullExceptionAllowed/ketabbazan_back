@@ -26,5 +26,8 @@ class Book(models.Model):
 
     def __str__(self):
         formatter = 'Name: {:28} | Written by: {:8} | Price: {:6}'
-        writers = "، ".join(str(author) for author in self.author.all())
-        return formatter.format(self.name, writers, self.price)        
+        writers = self.getwriters()
+        return formatter.format(self.name, writers, self.price)     
+
+    def getwriters(self):
+        return "، ".join(str(author) for author in self.author.all())       
