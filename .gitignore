@@ -1,1 +1,4 @@
 *.pyc
+**/migrations/*.py
+core/settings.py
+.idea
