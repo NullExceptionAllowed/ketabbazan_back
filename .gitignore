@@ -1,4 +1,4 @@
 *.pyc
-**/migrations/
+**/migrations/*.py
 core/settings.py
 .idea
