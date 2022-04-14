@@ -3,9 +3,11 @@ from .models import Profile
 from accounts.models import User
 
 class Profileserializer(serializers.ModelSerializer):
+    born_date = serializers.CharField(max_length=12)
     class Meta:
         model = Profile
         fields = ('fullname', 'bio', 'gender', 'born_date')
+
 
 
 class Profileserializerwithimage(serializers.ModelSerializer):
