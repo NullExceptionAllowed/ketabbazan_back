@@ -53,29 +53,22 @@ class Profileinfo(APIView):
     permission_classes = [IsAuthenticated, ]
 
     def put(self, request):
-        try:
-            bio = request.data['bio']
-        except:
-            bio=None
-        try:
-            gender = request.data['gender']
-        except:
-            gender=None
-        try:
-            born_date = request.data['born_date']
-        except:
-            born_date = None
-        try:
-            nickname = request.data['nickname']
-        except:
-            nickname = None
+        bio = request.data['bio']
+        gender = request.data['gender']
+        born_date = request.data['born_date']
+        nickname = request.data['nickname']
+        fullname = request.data['fullname']
+        request.user.profile.fullname=fullname
         request.user.nickname=nickname
         request.user.profile.bio = bio
-        request.user.profile.born_date = born_date
-        if gender is None:
-            request.user.profile.gender=None
+        if gender == "N":
+            request.user.profile.gender = None
         else:
             request.user.profile.gender = gender
+        if born_date=="":
+            request.user.profile.born_date=None
+        else:
+            request.user.profile.born_date=born_date
         request.user.save()
         request.user.profile.save()
         ser_profile=Profileserializer(request.data)
