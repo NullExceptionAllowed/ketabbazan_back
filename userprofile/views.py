@@ -52,7 +52,7 @@ class Profileimage(generics.RetrieveAPIView):
 class Profileinfo(APIView):
     permission_classes = [IsAuthenticated, ]
 
-    def put(self, request):
+    def post(self, request):
         bio = request.data['bio']
         gender = request.data['gender']
         born_date = request.data['born_date']
@@ -113,7 +113,12 @@ class UsernameChange(APIView):
         new_username = request.data['username']
         if(not User.objects.filter(username=new_username).exists() or new_username==request.user.username ):
             request.user.username = new_username
-            request.user.save()
+            image = request.user.profile.image
+            user = request.user
+            os.rename(str(image), f"media/profileimages/{new_username}.jpg")
+            user.profile.image = f"media/profileimages/{new_username}.jpg"
+            user.profile.save()
+            user.save()
             return Response(data={'message':'new username set successful'}, status=status.HTTP_200_OK)
         else:
             return Response(data={'message':'this username already exist'}, status=status.HTTP_400_BAD_REQUEST)
