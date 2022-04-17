@@ -8,7 +8,7 @@ class UserAdmin(DefaultUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': (
-            'nickname', 'email',
+            'nickname', 'email', 'profile'
         )}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'read_book',
     'rest_framework',
     'rest_framework.authtoken',    
+    'userprofile',
 ]
 
 

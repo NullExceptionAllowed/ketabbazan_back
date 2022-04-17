@@ -29,7 +29,8 @@ class UserProfile(APIView):
         return Response(
             data={'nickname': request.user.nickname},
             status=status.HTTP_200_OK
-        )    
+        )
+
 
 class ObtainAuthToken(APIView):
     throttle_classes = ()

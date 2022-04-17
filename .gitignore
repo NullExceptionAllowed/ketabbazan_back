@@ -1,1 +1,9 @@
 *.pyc
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
+core/settings.py
+
+.idea
