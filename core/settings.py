@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts.apps.AccountsConfig',
     'read_book',
+    'userprofile',
+    'search',
     'rest_framework',
     'rest_framework.authtoken',    
-    'userprofile',
 ]
 
 
@@ -93,11 +94,11 @@ DATABASES = {
       'PASSWORD': 'admin2000',  
           
       #Server Config
-    #   'HOST': '98522148.mysql.pythonanywhere-services.com',
+      'HOST': '98522148.mysql.pythonanywhere-services.com',
 
       #Develop Config
-      'HOST': 'localhost',
-      'PORT': '3306',
+    #   'HOST': 'localhost',
+    #   'PORT': '3306',
   }
 }
 

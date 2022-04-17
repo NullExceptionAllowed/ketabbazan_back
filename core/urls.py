@@ -39,5 +39,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('read_book/', include('read_book.urls')),
-    path('profile/', include('userprofile.urls'))
+    path('profile/', include('userprofile.urls')),
+    path('search/', include('search.urls')),
 ]
