@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'read_book',
     'userprofile',
     'search',
+    'write_article',
     'rest_framework',
     'rest_framework.authtoken',    
 ]
@@ -94,11 +95,11 @@ DATABASES = {
       'PASSWORD': 'admin2000',  
           
       #Server Config
-      'HOST': '98522148.mysql.pythonanywhere-services.com',
+    #   'HOST': '98522148.mysql.pythonanywhere-services.com',
 
       #Develop Config
-    #   'HOST': 'localhost',
-    #   'PORT': '3306',
+      'HOST': 'localhost',
+      'PORT': '3306',
   }
 }
 
