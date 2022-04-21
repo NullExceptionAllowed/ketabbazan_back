@@ -8,7 +8,7 @@ from read_book.models import Book
 
 class Comment(models.Model):
     comment_text = models.CharField(max_length=500, null=False, blank=False)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, unique=False)
     book = models.ForeignKey(to=Book, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
 

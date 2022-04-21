@@ -38,3 +38,8 @@ class Book(models.Model):
             return -1
         return sum(all_rates)/len(all_rates)
 
+    def allcomments(self):
+        all_comments = self.comment_set.all()
+        pass
+
+

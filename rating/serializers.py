@@ -26,6 +26,17 @@ class Rateserializer(serializers.ModelSerializer):
         return obj
 
 
+class Allbookinfoserializer(serializers.ModelSerializer):
+    avg_rate = serializers.SerializerMethodField('avrage_rate')
+    def avrage_rate(self,book):
+        return book.average_rate()
+    class Meta:
+        model = Book
+        fields = ('id', 'avg_rate')
+
+
+
+
 
 
 

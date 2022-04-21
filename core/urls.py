@@ -42,4 +42,5 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
     path('search/', include('search.urls')),
     path('rate/', include('rating.urls')),
+    path('comment/', include('comments.urls')),
 ]
