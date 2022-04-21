@@ -41,4 +41,5 @@ urlpatterns = [
     path('read_book/', include('read_book.urls')),
     path('profile/', include('userprofile.urls')),
     path('search/', include('search.urls')),
+    path('rate/', include('rating.urls')),
 ]
