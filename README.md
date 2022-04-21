@@ -60,6 +60,12 @@ GET /read_book/pdf_file/<id>/
 POST /write_article/
 ```
 
+| Parameter | Description                |
+| :-------- | :------------------------- |
+| `title` |  |
+| `body` ||
+| `summary` |  |
+
 #### Show all of articles
 
 ```http
