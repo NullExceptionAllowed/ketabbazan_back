@@ -57,7 +57,7 @@ GET /read_book/pdf_file/<id>/
 #### Post an article
 
 ```http
-POST /write_article/
+POST /write_article/create_article
 ```
 
 | Parameter | Description                |
@@ -65,6 +65,7 @@ POST /write_article/
 | `title` |  |
 | `body` ||
 | `summary` |  |
+| `image` | **file** |
 
 #### Show all of articles
 
