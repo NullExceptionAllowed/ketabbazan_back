@@ -45,11 +45,29 @@ GET /read_book/newest_books/
 #### Show all books information (in order of when added in our database)
 
 ```http
-GET /read_book/all_books
+GET /read_book/all_books/
 ```
 
 #### Get a specific book pdf file (URL of the file not the file itself)
 
 ```http
-GET /read_book/pdf_file/<id>
+GET /read_book/pdf_file/<id>/
+```
+
+#### Post an article
+
+```http
+POST /write_article/
+```
+
+#### Show all of articles
+
+```http
+GET /write_article/
+```
+
+#### Show 10 most recent articles
+
+```http
+GET /write_article/newest_articles/
 ```
