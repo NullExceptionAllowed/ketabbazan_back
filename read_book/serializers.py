@@ -9,3 +9,4 @@ class BookInfoSerializer(serializers.Serializer):
     image_url = serializers.URLField()
     created = serializers.DateTimeField(default=timezone.now) 
     pdf_url = serializers.URLField()  
+    genre_name = serializers.CharField(source='genre.name', allow_null=True)
