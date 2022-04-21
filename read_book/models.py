@@ -37,3 +37,4 @@ class Book(models.Model):
         if(len(all_rates)==0): #no one rate for this book
             return -1
         return sum(all_rates)/len(all_rates)
+
