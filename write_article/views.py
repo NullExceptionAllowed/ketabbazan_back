@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from write_article.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class ArticleList(generics.ListCreateAPIView):
     queryset = Article.objects.all()
@@ -40,3 +41,16 @@ class NewestArticles(APIView):
             data['id'] = article.id
             ans.append(data)
         return Response(ans)                          
+
+class CreateArticle(APIView):        
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self, request, format=None):
+        print(request.data)
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
