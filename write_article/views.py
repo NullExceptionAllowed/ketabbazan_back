@@ -26,7 +26,7 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
 
-class NewestBooks(APIView):
+class NewestArticles(APIView):
     authentication_classes = []
     permission_classes = []
 
