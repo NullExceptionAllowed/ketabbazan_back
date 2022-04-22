@@ -44,7 +44,7 @@ class NewestArticles(APIView):
 
 class CreateArticle(APIView):        
     permission_classes = [permissions.IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    # parser_classes = [MultiPartParser, FormParser]
     
     def post(self, request, format=None):
         print(request.data)
