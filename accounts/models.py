@@ -2,11 +2,15 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from userprofile.models import Profile
 from django.contrib.auth import password_validation
+from read_book.models import Book
 
 class User(AbstractUser):
     nickname = models.CharField(max_length=15, null=True, blank=True)
     email = models.EmailField(unique=True)  
     profile=models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
+    past_read = models.ManyToManyField(Book, blank=True, related_name='book_past_read')
+    cur_read = models.ManyToManyField(Book, blank=True, related_name='book_cur_read')
+    favourite = models.ManyToManyField(Book, blank=True, related_name='book_favourite')
 
     def save(self, *args, **kwargs):
         try:
