@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from read_book.models import Book
-from .serializers import Rateserializer, Allbookinfoserializer
+from .serializers import Rateserializer
 from .models import Rating
 from rest_framework.response import Response
 from rest_framework import  status
@@ -43,11 +43,4 @@ class Userrate(APIView):
             return Response({"message":"this user did not rate for this book"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Allbookinfo(APIView):
-    permission_classes = [IsAuthenticated, ]
-    def get(self, request):
-        book = Book.objects.first()
-        ser_book = Allbookinfoserializer(book)
-        return Response(ser_book.data, status=status.HTTP_200_OK)
-        #else:
-         #   return Response(status=status.HTTP_400_BAD_REQUEST)
+

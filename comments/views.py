@@ -28,12 +28,26 @@ class Commentapi(APIView):
 
 class Replytocomment(APIView):
     permission_classes = [IsAuthenticated, ]
+
     def post(self, request):
-        pass
+        request.data['user'] = request.user.id
+        ser_reply = Replyserializer(data=request.data)
+        if ser_reply.is_valid():
+            ser_reply.save()
+            return Response(ser_reply.data, status=status.HTTP_200_OK)
+        else:
+            return Response(ser_reply.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        reply = Replycomment.objects.first()
-        ser_reply = Replyserializer(reply)
-        return Response(ser_reply.data, status=status.HTTP_200_OK)
+        comment_id = request.query_params['comment_id']
+        comment = Comment.objects.get(id=comment_id)
+        result=[]
+        for reply in comment.replycomment_set.all():
+            ser_comment = Replyserializer(reply)
+            result.append(ser_comment.data)
+
+        return Response(data=result, status=status.HTTP_200_OK)
+
+
 
 

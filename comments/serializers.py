@@ -11,11 +11,14 @@ class Usercommentserializer(serializers.ModelSerializer):
 
 
 class Replyserializer(serializers.ModelSerializer):
-    user = Usercommentserializer()
-
     class Meta:
         model = Replycomment
         fields = ('reply_text', 'user', 'created_on', 'comment')
+
+    def create(self, validated_data):
+        obj = super().create(validated_data)
+        obj.save()
+        return obj
 
 
 class Commentserializer(serializers.ModelSerializer):
