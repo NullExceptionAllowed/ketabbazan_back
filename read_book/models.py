@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
@@ -40,6 +42,19 @@ class Book(models.Model):
 
     def allcomments(self):
         all_comments = self.comment_set.all()
-        pass
-
+        result = []
+        i=0
+        for comment in all_comments:
+            result.append({"comment_text": comment.comment_text,
+                           "user": comment.user.username,
+                           "created_on": comment.created_on,
+                           "reply": []
+                           })
+            for reply in comment.replycomment_set.all():
+                result[i]['reply'].append({"reply_text": reply.reply_text,
+                                           "user": reply.user.username,
+                                           "created_on": reply.created_on
+                                           })
+            i += 1
+        return result
 

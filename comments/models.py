@@ -1,9 +1,10 @@
 from django.db import models
 from accounts.models import User
-from read_book.models import Book
+
 
 
 # Create your models here.
+from read_book.models import Book
 
 
 class Comment(models.Model):
