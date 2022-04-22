@@ -78,3 +78,15 @@ GET /write_article/
 ```http
 GET /write_article/newest_articles/
 ```
+
+#### Show Similar books with specific book
+
+```http
+GET /similar_books/<id>
+```
+
+#### Show other books which read by readers of specific book
+
+```http
+GET /similar_books/others_read/<id>
+```
