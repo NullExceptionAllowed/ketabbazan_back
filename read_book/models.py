@@ -37,7 +37,7 @@ class Book(models.Model):
     def average_rate(self):
         all_rates = [rate.rate for rate in self.rating_set.all()]
         if(len(all_rates)==0): #no one rate for this book
-            return -1
+            return 0
         return sum(all_rates)/len(all_rates)
 
     def allcomments(self):

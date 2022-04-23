@@ -29,7 +29,8 @@ class Rate(APIView):
     def get(self,request):
         book_id = request.query_params['id']
         book = Book.objects.get(id=book_id)
-        return Response({"avg":book.average_rate()}, status=status.HTTP_200_OK)
+        number_of_rates = Rating.objects.filter(book=book).count()
+        return Response({"avg": book.average_rate(), "count": number_of_rates}, status=status.HTTP_200_OK)
 
 class Userrate(APIView):
     permission_classes = [IsAuthenticated, ]
