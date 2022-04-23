@@ -8,6 +8,7 @@ def upload_to(instance, filename):
 
 class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    created_jalali = models.CharField(max_length=100, blank=True, default='')
     title = models.CharField(max_length=100, blank=True, default='')
     body = models.TextField(blank=True, default='')
     summary = models.TextField(blank=True, default='')

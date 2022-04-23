@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from write_article.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
+from jalali_date import datetime2jalali
 
 class ArticleList(generics.ListCreateAPIView):
     queryset = Article.objects.all()
@@ -49,6 +50,9 @@ class CreateArticle(APIView):
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
+            latestarticle = Article.objects.latest('id')
+            latestarticle.created_jalali = datetime2jalali(latestarticle.created).strftime('%y/%m/%d _ %H:%M:%S')
+            latestarticle.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
