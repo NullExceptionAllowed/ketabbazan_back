@@ -4,6 +4,17 @@ from read_book.models import Book
 from accounts.models import User
 from read_book.serializers import BookInfoSerializer
 from rest_framework.response import Response
+import operator
+
+def countfromlist(dct, lst, id):
+    for a in lst:
+        if int(a) == int(id):
+            continue
+        try:
+            dct[a] += 1
+        except KeyError:
+            dct[a] = 1
+    return dct
 
 class OthersRead(APIView):
     authentication_classes = []
@@ -12,20 +23,17 @@ class OthersRead(APIView):
     def get(self, request, id):
         thebook = get_object_or_404(Book, id=id)
         usersreadthebook = []
-        res = []
+        res = {}
         for user in User.objects.all():
             if thebook in user.favourite.all() or thebook in user.past_read.all() or thebook in user.cur_read.all():
-                res.extend([book.id for book in user.favourite.all()])
-                res.extend([book.id for book in user.past_read.all()])
-                res.extend([book.id for book in user.cur_read.all()])
-
-        res = list(dict.fromkeys(res)) # Remove duplicates
-
+                res = countfromlist(res, [book.id for book in user.favourite.all()], id)
+                res = countfromlist(res, [book.id for book in user.past_read.all()], id)
+                res = countfromlist(res, [book.id for book in user.cur_read.all()], id)
+    
         ans = []
 
-        for book_id in res:
-            if int(id) == int(book_id):
-                continue
+        for _ in sorted(res.items(), key=operator.itemgetter(1), reverse=True)[:10]:
+            book_id = _[0]
             booki = get_object_or_404(Book, id=book_id)
             book_serializer = BookInfoSerializer(instance=booki)
             data = book_serializer.data
