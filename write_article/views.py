@@ -27,20 +27,10 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
 
-class NewestArticles(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        articles = [article for article in Article.objects.all()]
-        articles.sort(key = lambda x : x.created, reverse=True)
-        ans = []
-        for article in articles[:10]:
-            article_serializer = ArticleSerializer(instance=article)
-            data = article_serializer.data
-            data['id'] = article.id
-            ans.append(data)
-        return Response(ans)                          
+class NewestArticles(generics.ListCreateAPIView):
+    queryset = Article.objects.order_by('-created')
+    serializer_class = ArticleSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]                          
 
 class CreateArticle(APIView):        
     permission_classes = [permissions.IsAuthenticated]
