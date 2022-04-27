@@ -10,12 +10,15 @@ class AllBooks(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request, format=None):
+    def get(self, request, page):
         books = [book for book in Book.objects.all()]
         books.sort(key = lambda x : x.created, reverse=True)
         ans = []
-        page = int(request.query_params['page'])
-        for book in books[(page - 1) * 16 : page * 16]:
+        iteratingset = books
+        if len(page) > 0:
+            page = int(page)
+            iteratingset = books[(page - 1) * 16 : page * 16]
+        for book in iteratingset:
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
