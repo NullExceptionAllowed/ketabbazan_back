@@ -10,12 +10,13 @@ class AllBooks(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request, page):
+    def get(self, request, page = 0):
         books = [book for book in Book.objects.all()]
         books.sort(key = lambda x : x.created, reverse=True)
         ans = []
         iteratingset = books
-        if len(page) > 0:
+        print("page:",page)
+        if page != 0:
             page = int(page)
             iteratingset = books[(page - 1) * 16 : page * 16]
         for book in iteratingset:
