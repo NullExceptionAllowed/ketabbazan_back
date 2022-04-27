@@ -14,7 +14,8 @@ class AllBooks(APIView):
         books = [book for book in Book.objects.all()]
         books.sort(key = lambda x : x.created, reverse=True)
         ans = []
-        for book in books:
+        page = int(request.query_params['page'])
+        for book in books[(page - 1) * 16 : page * 16]:
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
