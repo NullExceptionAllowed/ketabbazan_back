@@ -41,7 +41,7 @@ class CreateArticle(APIView):
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
             latestarticle = Article.objects.latest('id')
-            latestarticle.created_jalali = datetime2jalali(latestarticle.created).strftime('%y/%m/%d')
+            latestarticle.created_jalali = datetime2jalali(latestarticle.created).strftime('14%y/%m/%d')
             latestarticle.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
