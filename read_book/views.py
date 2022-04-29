@@ -16,6 +16,8 @@ class AllBooks(APIView):
         ans = []
         iteratingset = books
         print("page:",page)
+        if page == "page_count":
+            return Response(len(books) // 16)
         if page != 0:
             page = int(page)
             iteratingset = books[(page - 1) * 16 : page * 16]
