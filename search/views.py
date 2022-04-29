@@ -13,7 +13,9 @@ class Booksearch(APIView):
 
     def get(self,request):
         try:
-            page = int(request.query_params['page'])
+            page = request.query_params['page']
+            if page != "page_count":
+                page = int(page)
             print(page)
         except:
             page = 1
@@ -23,6 +25,11 @@ class Booksearch(APIView):
         except:
             sort=None
         books = [book for book in Book.objects.filter(Q(name__contains=q) | Q(author__name__contains=q) | Q(genre__name__contains=q) ).distinct()]
+        if page == "page_count":
+            page_count = len(books) // 16
+            if len(books) % 16 > 0:
+                page_count += 1
+            return Response(page_count)            
         if(sort==1): #chippest books
             books.sort(key=lambda x: x.price, reverse=True)
         elif(sort==2): #most expensive books
