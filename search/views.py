@@ -12,6 +12,11 @@ class Booksearch(APIView):
     permission_classes = [AllowAny, ]
 
     def get(self,request):
+        try:
+            page = int(request.query_params['page'])
+            print(page)
+        except:
+            page = 1
         q=request.query_params['q']
         try:
             sort=int(request.query_params['sort'])
@@ -25,7 +30,8 @@ class Booksearch(APIView):
         if(sort==3): #newset books
             books.sort(key=lambda x: x.created, reverse=True)
         ans = []
-        for book in books:
+        iteratingset = books[(page - 1) * 16 : page * 16]
+        for book in iteratingset:
             book_serializer = BookInfoSerializer(instance=book)
             data = book_serializer.data
             data['id'] = book.id
