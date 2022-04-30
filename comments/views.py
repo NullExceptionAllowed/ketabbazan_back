@@ -10,7 +10,7 @@ from read_book.models import Book
 
 
 class Commentapi(APIView):
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAuthenticated, ]
     def post(self, request):
         request.data['user'] = request.user.id
         ser_comment = Commentserializer(data=request.data)
