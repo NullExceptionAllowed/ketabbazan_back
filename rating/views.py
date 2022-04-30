@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from read_book.models import Book
 from .serializers import Rateserializer, returnrateserializer
 from .models import Rating
@@ -26,11 +26,7 @@ class Rate(APIView):
             return Response({"message": "you have rated for this book"},status=status.HTTP_400_BAD_REQUEST)
 
 
-    def get(self,request):
-        book_id = request.query_params['id']
-        book = Book.objects.get(id=book_id)
-        ser_book = returnrateserializer(book)
-        return Response({"rateinfo":ser_book.data}, status=status.HTTP_200_OK)
+
 
 class Userrate(APIView):
     permission_classes = [IsAuthenticated, ]
@@ -43,5 +39,13 @@ class Userrate(APIView):
         except:
             return Response({"message":"this user did not rate for this book"}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class Getrate(APIView):
+    permission_classes = [AllowAny, ]
+    def get(self,request):
+        book_id = request.query_params['id']
+        book = Book.objects.get(id=book_id)
+        ser_book = returnrateserializer(book)
+        return Response({"rateinfo":ser_book.data}, status=status.HTTP_200_OK)
 
 
