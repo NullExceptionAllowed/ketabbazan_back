@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from read_book.models import Book
-from .serializers import Rateserializer
+from .serializers import Rateserializer, returnrateserializer
 from .models import Rating
 from rest_framework.response import Response
 from rest_framework import  status
@@ -29,8 +29,8 @@ class Rate(APIView):
     def get(self,request):
         book_id = request.query_params['id']
         book = Book.objects.get(id=book_id)
-        number_of_rates = Rating.objects.filter(book=book).count()
-        return Response({"avg": book.average_rate(), "count": number_of_rates}, status=status.HTTP_200_OK)
+        ser_book = returnrateserializer(book)
+        return Response({"rateinfo":ser_book.data}, status=status.HTTP_200_OK)
 
 class Userrate(APIView):
     permission_classes = [IsAuthenticated, ]

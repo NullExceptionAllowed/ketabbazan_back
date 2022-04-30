@@ -27,7 +27,17 @@ class Rateserializer(serializers.ModelSerializer):
 
 
 
+class returnrateserializer(serializers.ModelSerializer):
+    avg = serializers.SerializerMethodField('getavg')
+    count = serializers.SerializerMethodField('getcount')
 
+    def getavg(self, book):
+        return book.average_rate()
+    def getcount(self, book):
+        return book.rating_set.count()
+    class Meta:
+        model = Book
+        fields = ('avg', 'count')
 
 
 
