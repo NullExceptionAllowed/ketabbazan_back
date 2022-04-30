@@ -45,7 +45,8 @@ class Book(models.Model):
         result = []
         i=0
         for comment in all_comments:
-            result.append({"comment_text": comment.comment_text,
+            result.append({"id": comment.id,
+                           "comment_text": comment.comment_text,
                            "user": comment.user.username,
                            "created_on": comment.created_on,
                            "reply": []
