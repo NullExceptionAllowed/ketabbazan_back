@@ -51,6 +51,7 @@ class ObtainAuthToken(APIView):
 
         content = {
             'token': unicode(token.key),
+            'nickname': user.nickname,
         }
 
         return Response(content)
