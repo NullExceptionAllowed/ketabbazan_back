@@ -44,6 +44,7 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
     path('search/', include('search.urls')),
     path('write_article/', include('write_article.urls')),
+    path('similar_books/', include('similar_books.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
