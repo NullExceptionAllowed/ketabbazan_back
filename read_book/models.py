@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
@@ -31,3 +33,30 @@ class Book(models.Model):
 
     def getwriters(self):
         return "، ".join(str(author) for author in self.author.all())
+
+    def average_rate(self):
+        all_rates = [rate.rate for rate in self.rating_set.all()]
+        if(len(all_rates)==0): #no one rate for this book
+            return 0
+        return sum(all_rates)/len(all_rates)
+
+    def allcomments(self):
+        all_comments = self.comment_set.all()
+        result = []
+        i=0
+        for comment in all_comments:
+            result.append({"id": comment.id,
+                           "comment_text": comment.comment_text,
+                           "user": comment.user.username if comment.user.nickname is None else comment.user.nickname,
+                           "created_on": comment.created_on,
+                           "reply": []
+                           })
+            for reply in comment.replycomment_set.all():
+                result[i]['reply'].append({"reply_text": reply.reply_text,
+                                           "user": reply.user.username if reply.user.nickname is None
+                                           else reply.user.nickname,
+                                           "created_on": reply.created_on
+                                           })
+            i += 1
+        return result
+
