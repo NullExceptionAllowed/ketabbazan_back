@@ -35,7 +35,7 @@ class Userrate(APIView):
         book = Book.objects.get(id=book_id)
         try:
             rate = Rating.objects.get(book=book, user=request.user).rate
-            return Response({"rate":rate}, status=status.HTTP_200_OK)
+            return Response({"rate":{"rate":rate}}, status=status.HTTP_200_OK)
         except:
             return Response({"message":"this user did not rate for this book"}, status=status.HTTP_400_BAD_REQUEST)
 
