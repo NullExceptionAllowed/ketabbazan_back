@@ -58,8 +58,7 @@ class Advancesearch(APIView):
             max_price = int(request.query_params['max_price'])
         except:
             max_price = 20000000
-        books = \
-            books.filter(price__gte=min_price , price__lte=max_price)
+        books = books.filter(price__gte=min_price , price__lte=max_price)
         ans=[]
         for book in books:
             book_serializer = BookInfoSerializer(instance=book)
