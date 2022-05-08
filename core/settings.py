@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'corsheaders',
     'jalali_date',
     'accounts.apps.AccountsConfig',
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rating',
     'comments',
+    'advance_search',
 ]
 
 # default settings
