@@ -16,5 +16,5 @@ class Advancesearch(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         objs = super().list(request, *args, **kwargs)
-
         return objs
+
