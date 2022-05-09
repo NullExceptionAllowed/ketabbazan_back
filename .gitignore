@@ -1,5 +1,4 @@
 *.pyc
-__pycache__/
 
 **/migrations/**
 !**/migrations
@@ -9,4 +8,4 @@ core/settings.py
 
 .idea
 
-media/
+/media
