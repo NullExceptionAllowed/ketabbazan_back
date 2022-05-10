@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rating',
     'comments',
+    'show_profile',
 ]
 
 # default settings
