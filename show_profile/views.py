@@ -20,3 +20,35 @@ class Showprofile(APIView):
             return Response({"message": "no user with this id"}, status=status.HTTP_400_BAD_REQUEST)
         ser_profile = Publicprofileserializer(user)
         return Response(ser_profile.data, status=status.HTTP_200_OK)
+
+
+class ChangeProfileInfoPublicOrPrivate(APIView):
+    def put(self, request):
+        if request.data['is_public']==1:
+            request.user.profile.public_profile_info = True
+        else:
+            request.user.profile.public_profile_info = False
+        request.user.profile.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class ChangeProfileReadbookPublicOrPrivate(APIView):
+    def put(self, request):
+        if request.data['is_public'] == 1:
+            request.user.profile.public_show_read_books = True
+        else:
+            request.user.profile.public_show_read_books = False
+        request.user.profile.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class ChangeProfileArticlePublicOrPrivate(APIView):
+    def put(self, request):
+        if request.data['is_public'] == 1:
+            request.user.profile.public_show_articles = True
+        else:
+            request.user.profile.public_show_articles = False
+        request.user.profile.save()
+        return Response(status=status.HTTP_200_OK)
+
+
