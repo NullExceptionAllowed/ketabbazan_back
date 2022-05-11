@@ -8,9 +8,9 @@ class Profile(models.Model):
     bio = models.CharField(null=True, blank=True, max_length=1000, default=None)
     gender = models.CharField(null=True, choices=(('M','Male'), ('F','Female')), max_length=1, blank=True)
     born_date = models.DateField(null=True, blank=True, default=None)
-    public_profile_info = models.BooleanField(default=False)
-    public_show_articles = models.BooleanField(default=False)
-    public_show_read_books = models.BooleanField(default=False)
+    public_profile_info = models.BooleanField(default=True)
+    public_show_articles = models.BooleanField(default=True)
+    public_show_read_books = models.BooleanField(default=True)
 
     def __str__(self):
         try:
