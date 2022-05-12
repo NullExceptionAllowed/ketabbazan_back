@@ -48,6 +48,7 @@ class Book(models.Model):
             result.append({"id": comment.id,
                            "comment_text": comment.comment_text,
                            "user": comment.user.username if comment.user.nickname is None else comment.user.nickname,
+                           "user_id": comment.user.id,
                            "created_on": comment.created_on,
                            "reply": []
                            })
@@ -55,7 +56,8 @@ class Book(models.Model):
                 result[i]['reply'].append({"reply_text": reply.reply_text,
                                            "user": reply.user.username if reply.user.nickname is None
                                            else reply.user.nickname,
-                                           "created_on": reply.created_on
+                                           "created_on": reply.created_on,
+                                           "reply_user_id":reply.user.id
                                            })
             i += 1
         return result
