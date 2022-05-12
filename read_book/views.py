@@ -2,9 +2,33 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Book
-from rest_framework import generics
-from read_book.custom_renderers import JPEGRenderer
+from accounts.models import User
 from .serializers import BookInfoSerializer
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+class BuyAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, id):
+
+        user = User.objects.get(id=request.user.id)
+
+        # Have not enough money
+        if Book.objects.get(id=id).price > user.balance:
+            return Response("Not Enough Money", status=status.HTTP_400_BAD_REQUEST)
+
+        # Payed for this book earlier
+        if user.purchased_books.filter(id=id).count() > 0:
+            return Response("Payed Earlier", status=status.HTTP_400_BAD_REQUEST)
+
+        user.purchased_books.add(Book.objects.get(id=id))
+        print(user.balance)
+        user.balance -= Book.objects.get(id=id).price
+        user.save()
+        print(user.balance)
+
+        return Response(data="Success", status=status.HTTP_200_OK)
 
 class AllBooks(APIView):
     authentication_classes = []

@@ -7,6 +7,16 @@ from pytz import unicode
 
 from .serializers import UserSerializer, AuthCustomTokenSerializer
 
+class Deposit(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        print(int(dict(request.data.lists()).get('amount')[0]))
+        print(request.user.balance)
+        request.user.balance += int(dict(request.data.lists()).get('amount')[0])
+        request.user.save()
+        return Response(request.user.balance)
+
 class UserSignUp(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     authentication_classes = []
