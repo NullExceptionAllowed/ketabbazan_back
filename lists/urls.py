@@ -1,18 +1,16 @@
 from django.urls import path
-#from .views import user_cur_read, user_past_read, user_favourite, favourite_anyway, pastread_anyway, curread_anyway, test
 from rest_framework.routers import DefaultRouter
-from .views import get_books_of_list
+from .views import force_add_to_list, add_to_list, get_pastread, get_curread, get_leftread, get_favourite
 router = DefaultRouter()
-router.register('test', get_books_of_list)
+router.register('getpastread', get_pastread)
+router.register('getcurread', get_curread)
+router.register('getleftread', get_leftread)
+router.register('getfavourite', get_favourite)
 
 
 urlpatterns = [
-    #path('pastread/', user_past_read.as_view()),
-   # path('curread/', user_cur_read.as_view()),
-   # path('favourite/', user_favourite.as_view()),
-   # path('forcepastread/', pastread_anyway.as_view()),
-   # path('forcecurread/', curread_anyway.as_view()),
-   # path('forcefavourite/', favourite_anyway.as_view()),
+    path('add/', add_to_list.as_view()),
+    path('forceadd/', force_add_to_list.as_view())
 
 ]
 urlpatterns += router.urls

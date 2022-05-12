@@ -1,16 +1,10 @@
-from django.shortcuts import render
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-
-import accounts.serializers
 from read_book.models import Book
 from read_book.serializers import BookInfoSerializer
-from accounts.models import User
-
-
 # Create your views here.
 
 
@@ -25,7 +19,33 @@ def all_books(books):
     return ans
 
 
+def check_in_past_read(request, book):
+    if request.user.past_read.filter(id=book.id).exists():
+        return True
+    return False
+
+
+def check_in_cur_read(request, book):
+    if request.user.cur_read.filter(id=book.id).exists():
+        return True
+    return False
+
+
+def check_in_favourite(request, book):
+    if request.user.favourite.filter(id=book.id).exists():
+        return True
+    return False
+
+
+def check_in_left_read(request, book):
+    if request.user.left_read.filter(id=book.id).exists():
+        return True
+    return False
+
+
 class add_to_list(APIView):
+    permission_classes = [IsAuthenticated, ]
+
     def post(self, request):
         try:
             list_id = request.data['list_id']
@@ -37,27 +57,115 @@ class add_to_list(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         book = Book.objects.get(id=book_id)
         if list_id == 1:
+            if check_in_cur_read(request, book): return Response({"book_status": 2}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_favourite(request, book): return Response({"book_status": 3}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_left_read(request, book): return Response({"book_status": 4}, status=status.HTTP_400_BAD_REQUEST)
             request.user.past_read.add(book)
         elif list_id == 2:
+            if check_in_past_read(request, book): return Response({"book_status": 1}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_favourite(request, book): return Response({"book_status": 3}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_left_read(request, book): return Response({"book_status": 4}, status=status.HTTP_400_BAD_REQUEST)
             request.user.cur_read.add(book)
         elif list_id == 3:
+            if check_in_past_read(request, book): return Response({"book_status": 1}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_left_read(request, book): return Response({"book_status": 4}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_cur_read(request, book): return Response({"book_status": 2}, status=status.HTTP_400_BAD_REQUEST)
             request.user.favourite.add(book)
         elif list_id == 4:
+            if check_in_past_read(request, book): return Response({"book_status": 1}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_cur_read(request, book): return Response({"book_status": 2}, status=status.HTTP_400_BAD_REQUEST)
+            if check_in_favourite(request, book): return Response({"book_status": 3}, status=status.HTTP_400_BAD_REQUEST)
             request.user.left_read.add(book)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        request.user.save()
         return Response(status=status.HTTP_200_OK)
 
+
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 1
+    page_size = 8
     page_size_query_param = 'page_size'
     max_page_size = 10
 
-class get_books_of_list(viewsets.ModelViewSet):
+
+class get_pastread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookInfoSerializer
     pagination_class = StandardResultsSetPagination
-
+    permission_classes = [IsAuthenticated, ]
+    def get_queryset(self):
+        return self.request.user.past_read.all()
     def list(self, request, *args, **kwargs):
-        return super().list(request.user.past_read.all())
+        return super().list(request, *args, **kwargs)
 
+
+class get_curread(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookInfoSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, ]
+    def get_queryset(self):
+        return self.request.user.cur_read.all()
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+class get_favourite(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookInfoSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, ]
+    def get_queryset(self):
+        return self.request.user.favourite.all()
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+class get_leftread(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookInfoSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticated, ]
+    def get_queryset(self):
+        return self.request.user.left_read.all()
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+class force_add_to_list(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request):
+        try:
+            list_id = request.data['list_id']
+        except:
+            return Response({"message": "select a list"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            book_id = request.data['book_id']
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        book = Book.objects.get(id=book_id)
+        if list_id == 1:
+            request.user.cur_read.remove(book)
+            request.user.favourite.remove(book)
+            request.user.left_read.remove(book)
+            request.user.past_read.add(book)
+        elif list_id == 2:
+            request.user.past_read.remove(book)
+            request.user.favourite.remove(book)
+            request.user.left_read.remove(book)
+            request.user.cur_read.add(book)
+        elif list_id == 3:
+            request.user.past_read.remove(book)
+            request.user.left_read.remove(book)
+            request.user.cur_read.remove(book)
+            request.user.favourite.add(book)
+        elif list_id == 4:
+            request.user.past_read.remove(book)
+            request.user.cur_read.remove(book)
+            request.user.favourite.remove(book)
+            request.user.left_read.add(book)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        request.user.save()
+        return Response(status=status.HTTP_200_OK)
