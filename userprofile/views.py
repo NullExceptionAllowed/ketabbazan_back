@@ -26,7 +26,7 @@ class Profileimage(generics.RetrieveAPIView):
         return Response(image, content_type='image/jpeg')
 
     def post(self,request):
-        if (request.user.profile.image != "media/profileimages/default.jpg"):
+        if (request.user.profile.image != "profileimages/default.jpg"):
             os.remove(f"media/profileimages/{request.user.username}.jpg")
 
         image = request.FILES['image']
@@ -34,17 +34,17 @@ class Profileimage(generics.RetrieveAPIView):
         user.profile.image = image
         user.profile.save()
         os.rename(f"media/profileimages/{image}", f"media/profileimages/{request.user.username}.jpg")
-        user.profile.image = f"media/profileimages/{request.user.username}.jpg"
+        user.profile.image = f"profileimages/{request.user.username}.jpg"
         user.profile.save()
         return Response(status=status.HTTP_200_OK)
 
 
     def delete(self,request):
-        if(request.user.profile.image=="media/profileimages/default.jpg"):
+        if(request.user.profile.image=="profileimages/default.jpg"):
             return Response(data={"message": "default image can not deleted"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             os.remove(f"media/profileimages/{request.user.username}.jpg")
-            request.user.profile.image="media/profileimages/default.jpg"
+            request.user.profile.image="profileimages/default.jpg"
             request.user.profile.save()
             return Response(data={"message": "image deleted"}, status=status.HTTP_200_OK)
 
