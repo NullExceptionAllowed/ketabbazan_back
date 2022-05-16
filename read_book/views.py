@@ -73,9 +73,14 @@ class NewestBooks(APIView):
         return Response(ans)
 
 class PDFRetrieval(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, id):
-        book = get_object_or_404(Book, id=id)    
-        return Response(book.pdf_url)    
+        book = get_object_or_404(Book, id=id)  
+        if request.user.purchased_books.filter(id=id).count() > 0:
+            return Response(book.pdf_url, status=status.HTTP_200_OK)    
+        else:
+            return Response("Not purchased", status=status.HTTP_400_BAD_REQUEST)
 
 class BookInfoRetrieval(APIView):
     def get(self, request, id):
