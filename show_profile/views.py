@@ -18,7 +18,7 @@ class Showprofile(APIView):
             user = User.objects.get(id=user_id)
         except:
             return Response({"message": "no user with this id"}, status=status.HTTP_400_BAD_REQUEST)
-        ser_profile = Publicprofileserializer(user)
+        ser_profile = Publicprofileserializer(user, context={"request":self.request})
         return Response(ser_profile.data, status=status.HTTP_200_OK)
 
 

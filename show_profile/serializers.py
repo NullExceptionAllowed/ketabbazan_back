@@ -3,7 +3,19 @@ from accounts.models import User
 from userprofile.serializers import AccountProfileserializer
 from write_article.models import Article
 from read_book.serializers import BookInfoSerializer
-from write_article.serializers import ArticleSerializer
+#from write_article.serializers import ArticleSerializer
+
+
+class ArticleSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.nickname')
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id']
+    def get_image(self,article):
+        request = self.context.get('request')
+        image = article.image.url
+        return request.build_absolute_uri(image)
 
 class Publicprofileserializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField('get_profile')
@@ -19,7 +31,8 @@ class Publicprofileserializer(serializers.ModelSerializer):
 
     def get_user_articles(self, user):
         if user.profile.public_show_articles:
-            ans = [ArticleSerializer(article).data for article in Article.objects.filter(owner=user)]
+            ans=[]
+            ans.append(ArticleSerializer(Article.objects.filter(owner=user), many=True, context={"request": self.context.get("request")}).data)
             return ans
         else:
             return "no public"
@@ -33,3 +46,4 @@ class Publicprofileserializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('profile', 'read_books', 'user_articles')
+
