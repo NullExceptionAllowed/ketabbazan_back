@@ -54,25 +54,16 @@ class Profileinfo(APIView):
 
     def post(self, request):
         bio = request.data['bio']
-        gender = request.data['gender']
-        born_date = request.data['born_date']
         nickname = request.data['nickname']
         fullname = request.data['fullname']
         request.user.profile.fullname=fullname
         request.user.nickname=nickname
         request.user.profile.bio = bio
-        if gender == "N":
-            request.user.profile.gender = None
-        else:
-            request.user.profile.gender = gender
-        if born_date=="":
-            request.user.profile.born_date=None
-        else:
-            request.user.profile.born_date=born_date
+        request.user.profile.gender = None
+        request.user.profile.born_date = None
         request.user.save()
         request.user.profile.save()
-        ser_profile=Profileserializer(request.data)
-        return Response(ser_profile.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_200_OK)
 
     def get(self, request):
         ser_profile = AccountProfileserializer(request.user)
