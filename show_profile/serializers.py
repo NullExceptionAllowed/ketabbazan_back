@@ -31,8 +31,7 @@ class Publicprofileserializer(serializers.ModelSerializer):
 
     def get_user_articles(self, user):
         if user.profile.public_show_articles:
-            ans=[]
-            ans.append(ArticleSerializer(Article.objects.filter(owner=user), many=True, context={"request": self.context.get("request")}).data)
+            ans=ArticleSerializer(Article.objects.filter(owner=user), many=True, context={"request": self.context.get("request")}).data
             return ans
         else:
             return "no public"
