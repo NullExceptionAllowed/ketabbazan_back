@@ -10,6 +10,7 @@ from read_book.models import Book
 class BookInfoSerializer2(BookInfoSerializer):
     rate = serializers.SerializerMethodField('get_rate')
     author = serializers.SerializerMethodField('get_author')
+    id = serializers.SerializerMethodField('get_id')
     class Meta:
         model = Book
         fields = "__all__"
@@ -18,6 +19,8 @@ class BookInfoSerializer2(BookInfoSerializer):
     def get_author(self, book):
         ans = [author.name for author in book.author.all()]
         return ans
+    def get_id(self, book):
+        return book.id
 
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.nickname')
