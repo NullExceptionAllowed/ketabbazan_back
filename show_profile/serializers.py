@@ -3,8 +3,17 @@ from accounts.models import User
 from userprofile.serializers import AccountProfileserializer
 from write_article.models import Article
 from read_book.serializers import BookInfoSerializer
+from read_book.models import Book
 #from write_article.serializers import ArticleSerializer
 
+
+class BookInfoSerializer2(BookInfoSerializer):
+    rate = serializers.SerializerMethodField()
+    class Meta:
+        model = Book
+        fields = "__all__"
+    def get_rate(self,book):
+        return book.average_rate()
 
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.nickname')
@@ -24,7 +33,7 @@ class Publicprofileserializer(serializers.ModelSerializer):
 
     def get_read_books(self, user):
         if user.profile.public_show_read_books:
-            ans = [BookInfoSerializer(book).data for book in user.past_read.all()]
+            ans = [BookInfoSerializer2(book).data for book in user.past_read.all()]
             return ans
         else:
             return "no public"
