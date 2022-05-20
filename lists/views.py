@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from read_book.models import Book
+from .serializers import BookInfoSerializer2
 from read_book.serializers import BookInfoSerializer
 # Create your views here.
 
@@ -90,7 +91,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class get_pastread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookInfoSerializer
+    serializer_class = BookInfoSerializer2
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
@@ -101,7 +102,7 @@ class get_pastread(viewsets.ModelViewSet):
 
 class get_curread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookInfoSerializer
+    serializer_class = BookInfoSerializer2
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
@@ -112,7 +113,7 @@ class get_curread(viewsets.ModelViewSet):
 
 class get_favourite(viewsets.ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookInfoSerializer
+    serializer_class = BookInfoSerializer2
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
@@ -123,7 +124,7 @@ class get_favourite(viewsets.ModelViewSet):
 
 class get_leftread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookInfoSerializer
+    serializer_class = BookInfoSerializer2
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
