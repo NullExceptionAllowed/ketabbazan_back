@@ -169,3 +169,25 @@ class force_add_to_list(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         request.user.save()
         return Response(status=status.HTTP_200_OK)
+
+
+class BookStatus(APIView):
+    def get(self, request):
+        try:
+            book_id = request.query_params['book_id']
+        except:
+            return Response({"message": "no book_id!!"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            Book.objects.get(id=book_id)
+        except:
+            return Response({"message": "no book with this id"}, status=status.HTTP_400_BAD_REQUEST)
+        if request.user.past_read.filter(id=book_id):
+            return Response({"list_id": 1}, status=status.HTTP_200_OK)
+        elif request.user.cur_read.filter(id=book_id):
+            return Response({"list_id": 2}, status=status.HTTP_200_OK)
+        elif request.user.favourite.filter(id=book_id):
+            return Response({"list_id": 3}, status=status.HTTP_200_OK)
+        elif request.user.left_read.filter(id=book_id):
+            return Response({"list_id": 4}, status=status.HTTP_200_OK)
+        else:
+            return Response({"list_id": None}, status=status.HTTP_200_OK)
