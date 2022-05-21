@@ -121,3 +121,14 @@ class Profileimagelink(APIView):
     def get(self,request,image_name):
         image=f"media\profileimages\{image_name}"
         return Response(image, content_type='image/jpeg')
+
+class Profileimagefinale(APIView):
+    renderer_classes = [JPEGRenderer]
+    def get(self, request):
+        username = request.query_params['username']
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        image = user.profile.image
+        return Response(image, content_type='image/jpeg')
