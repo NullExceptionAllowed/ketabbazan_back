@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'search',
     'write_article',
     'similar_books',
+    'quiz',
     'rest_framework',
     'rest_framework.authtoken',
     'rating',

@@ -31,6 +31,7 @@ urlpatterns = [
     path('comment/', include('comments.urls')),
     path('lists/', include('lists.urls')),
     path('showprofile/', include('show_profile.urls')),
+    path('quiz/', include('quiz.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
