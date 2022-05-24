@@ -11,12 +11,9 @@ class User(AbstractUser):
     past_read = models.ManyToManyField(Book, blank=True, related_name='book_past_read')
     cur_read = models.ManyToManyField(Book, blank=True, related_name='book_cur_read')
     favourite = models.ManyToManyField(Book, blank=True, related_name='book_favourite')
-<<<<<<< HEAD
     balance = models.IntegerField(default=0, blank=True, null=True)
     purchased_books = models.ManyToManyField(Book, blank=True)
-=======
     left_read = models.ManyToManyField(Book, blank=True, related_name='book_left_read')
->>>>>>> 3715fb0ab0e1e521dab971c8f43b1bb5f2420091
 
     def save(self, *args, **kwargs):
         try:

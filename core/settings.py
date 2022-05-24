@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 AUTH_USER_MODEL = 'accounts.User'
 
 # Application definition
@@ -80,6 +82,10 @@ JALALI_DATE_DEFAULTS = {
         }
     },
 }
+
+CSRF_COOKIE_SECURE = False
+
+CSRF_TRUSTED_ORIGINS = ['http://94.101.185.252']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -174,6 +180,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
@@ -182,7 +189,3 @@ CORS_ALLOW_ALL_ORIGINS = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-#Heroku Settings
-import django_heroku
-django_heroku.settings(locals())
