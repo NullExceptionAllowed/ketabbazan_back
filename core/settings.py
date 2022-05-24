@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'drf_yasg',
     'corsheaders',
     'jalali_date',
     'accounts.apps.AccountsConfig',
@@ -52,6 +51,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rating',
     'comments',
+    'lists',
+    'show_profile',
 ]
 
 # default settings
@@ -115,12 +116,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
+
    'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
        'NAME': 'projdb',
        'HOST': 'localhost',
        'USER': 'postgres',
-       'PASSWORD': 'admin2000',
+    #    'PASSWORD': 'admin2000',
+       'PASSWORD': 'postgres', 
        'PORT': '5432',
    }
  }
@@ -178,3 +181,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#Heroku Settings
+import django_heroku
+django_heroku.settings(locals())

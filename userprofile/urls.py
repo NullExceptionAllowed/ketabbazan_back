@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import Profileimage, Profileinfo, Imageprofile, AccountProfile, PasswordChange,\
-    UsernameChange, Profileimagelink
+    UsernameChange, Profileimagelink, Profileimagefinale
 from rest_framework.routers import DefaultRouter
 
 
@@ -12,5 +12,6 @@ urlpatterns = [
     path('fullprofile/', AccountProfile.as_view()),
     path('changepassword/', PasswordChange.as_view()), #main
     path('changeusername/', UsernameChange.as_view()), #main
+    path('getimage/', Profileimagefinale.as_view())
 ]
 
