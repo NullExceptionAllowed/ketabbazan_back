@@ -3,7 +3,8 @@ from write_article.models import Article
 
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.nickname')
+    owner_id = serializers.ReadOnlyField(source='owner.id')
 
     class Meta:
         model = Article
-        fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner']
+        fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id']
