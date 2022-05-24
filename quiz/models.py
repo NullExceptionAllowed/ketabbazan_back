@@ -12,3 +12,9 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question
+
+class Quiz(models.Model):
+    question = models.ManyToManyField(Question, blank=True)
+
+    def __str__(self):
+        return "Quiz" + str(self.id)
