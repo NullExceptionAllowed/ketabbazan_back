@@ -13,14 +13,15 @@ class GenerateQuiz(APIView):
 
     def get(self, request, book_id):
         
-        print(Question.objects.filter(book=book_id))
+        queryset = Question.objects.filter(book=book_id).order_by('?')[:5]
 
-        return Response("Nothing")
+        ans = []
+        for question in queryset:
+            question_serializer = QuestionSerializer(instance=question)
+            data = question_serializer.data
+            ans.append(data)
 
-        # try:
-        #     questions = random.sample()
-        # except ValueError:
-        #     questions = 
+        return Response(ans)
 
 class ProposeQuestion(APIView):
     permission_classes = (IsAuthenticated,)

@@ -9,3 +9,5 @@ core/settings.py
 .idea
 
 /media
+
+/venv
