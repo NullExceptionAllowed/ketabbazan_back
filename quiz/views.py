@@ -6,7 +6,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
 import random
-from .models import Question
+from .models import Question, Quiz
 
 class GenerateQuiz(APIView):
     permission_classes = (IsAuthenticated,)
@@ -16,11 +16,16 @@ class GenerateQuiz(APIView):
         queryset = Question.objects.filter(book=book_id).order_by('?')[:5]
 
         ans = []
+        new_quiz = Quiz.objects.create()
+        ans.append({"id": new_quiz.id})
         for question in queryset:
             question_serializer = QuestionSerializer(instance=question)
             data = question_serializer.data
             ans.append(data)
+            
+            new_quiz.question.add(question)
 
+        new_quiz.save()
         return Response(ans)
 
 class ProposeQuestion(APIView):
