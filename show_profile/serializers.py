@@ -28,10 +28,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id']
-    def get_image(self,article):
-        request = self.context.get('request')
-        image = article.image.url
-        return request.build_absolute_uri(image)
+    def get_image(self, article):
+        return "http://94.101.185.252" + article.image.url
 
 class Publicprofileserializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField('get_profile')
