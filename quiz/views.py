@@ -22,6 +22,7 @@ class GenerateQuiz(APIView):
             question_serializer = QuestionSerializer(instance=question)
             data = question_serializer.data
             del data["ans"]
+            del data["book"]
             ans.append(data)
             
             new_quiz.question.add(question)
