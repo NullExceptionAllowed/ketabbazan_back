@@ -5,8 +5,17 @@ from quiz.serializers import QuestionSerializer
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework import status
-import random
 from .models import Question, Quiz
+
+class SubmitQuiz(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, quiz_id):
+        res = {}
+        questions = Quiz.objects.get(id=quiz_id).question.order_by('id')
+        for question, i in zip(questions, range(1, questions.count() + 1)):
+            res["ans" + str(i)] = question.ans
+        return Response(res)
 
 class GenerateQuiz(APIView):
     permission_classes = (IsAuthenticated,)
@@ -18,16 +27,18 @@ class GenerateQuiz(APIView):
         ans = []
         new_quiz = Quiz.objects.create()
         ans.append({"id": new_quiz.id})
+
         for question in queryset:
+            new_quiz.question.add(question)
+        new_quiz.save()
+
+        for question in new_quiz.question.order_by('id'):
             question_serializer = QuestionSerializer(instance=question)
             data = question_serializer.data
             del data["ans"]
             del data["book"]
             ans.append(data)
-            
-            new_quiz.question.add(question)
 
-        new_quiz.save()
         return Response(ans)
 
 class ProposeQuestion(APIView):
