@@ -21,6 +21,15 @@ class GenerateQuiz(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, book_id):
+        try:
+            param = request.query_params['q']
+            if param == "question_count":
+                return Response(min(5, Question.objects.filter(book=book_id).count()))
+        except:
+            pass
+
+        if (Question.objects.filter(book=book_id).count() == 0):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         
         queryset = Question.objects.filter(book=book_id).order_by('?')[:5]
 
