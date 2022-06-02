@@ -1,7 +1,7 @@
 from django.urls import path
 #from rest_framework.authtoken.views import obtain_auth_token
 
-from .views import Deposit, UserSignUp, UserLogout, ObtainAuthToken, UserProfile
+from .views import Deposit, UserSignUp, UserLogout, ObtainAuthToken, UserProfile, GetBalance
 
 urlpatterns = [
     path('signup/', UserSignUp.as_view()),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('profile/', UserProfile.as_view()),
     path('logout/', UserLogout.as_view()),
     path('deposit/', Deposit.as_view()),
+    path('balance/', GetBalance.as_view()),
 ]

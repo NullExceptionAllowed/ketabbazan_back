@@ -7,6 +7,15 @@ from pytz import unicode
 
 from .serializers import UserSerializer, AuthCustomTokenSerializer
 
+class GetBalance(APIView):
+    permission_classes = (IsAuthenticated,)  
+
+    def get(self, request):
+        return Response(
+            data={'balance': request.user.balance},
+            status=status.HTTP_200_OK
+        )
+
 class Deposit(APIView):
     permission_classes = (IsAuthenticated,)
 
