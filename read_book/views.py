@@ -7,6 +7,21 @@ from .serializers import BookInfoSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
+class GenreBooks(APIView):
+    authentication_classes = []
+    permission_classes = []   
+
+    def get(self, request, genre): 
+        queryset = Book.objects.filter(genre__name=genre)
+        ans = []
+        for book in queryset:
+            book_serializer = BookInfoSerializer(instance=book)
+            data = book_serializer.data
+            data['id'] = book.id
+            data['author'] = "، ".join(str(author) for author in book.author.all())
+            ans.append(data)
+        return Response(ans) 
+
 class BuyAPI(APIView):
     permission_classes = (IsAuthenticated,)
 

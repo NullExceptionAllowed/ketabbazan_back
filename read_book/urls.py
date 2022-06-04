@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewestBooks, PDFRetrieval, BookInfoRetrieval, AllBooks, BuyAPI
+from .views import NewestBooks, PDFRetrieval, BookInfoRetrieval, AllBooks, BuyAPI, GenreBooks
 
 app_name = 'read_book'
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('pdf_file/<id>', PDFRetrieval.as_view()),    
     path('info/<id>', BookInfoRetrieval.as_view()),
     path('buy/<int:id>', BuyAPI.as_view()),
+    path('genre/<genre>', GenreBooks.as_view()),
 ]
