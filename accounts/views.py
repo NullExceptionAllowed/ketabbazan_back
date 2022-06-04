@@ -20,9 +20,7 @@ class Deposit(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        print(int(dict(request.data.lists()).get('amount')[0]))
-        print(request.user.balance)
-        request.user.balance += int(dict(request.data.lists()).get('amount')[0])
+        request.user.balance += int(request.data.get('amount'))
         request.user.save()
         return Response(request.user.balance)
 
