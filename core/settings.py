@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'comments',
     'lists',
     'show_profile',
+    'django_rest_passwordreset',
 ]
 
 # default settings
@@ -129,8 +130,8 @@ DATABASES = {
        'NAME': 'projdb',
        'HOST': 'localhost',
        'USER': 'postgres',
-    #    'PASSWORD': 'admin2000',
-       'PASSWORD': 'postgres', 
+       'PASSWORD': 'admin2000',
+       #'PASSWORD': 'postgres',
        'PORT': '5432',
    }
  }
@@ -189,3 +190,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ketabbazann@gmail.com'
+EMAIL_HOST_PASSWORD = 'aasid_1400_1401_2'
