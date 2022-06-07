@@ -31,11 +31,11 @@ class BuyAPI(APIView):
 
         # Have not enough money
         if Book.objects.get(id=id).price > user.balance:
-            return Response("Not Enough Money", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Not Enough Money", status=status.HTTP_402_PAYMENT_REQUIRED)
 
         # Payed for this book earlier
         if user.purchased_books.filter(id=id).count() > 0:
-            return Response("Payed Earlier", status=status.HTTP_400_BAD_REQUEST)
+            return Response("Payed Earlier", status=status.HTTP_304_NOT_MODIFIED)
 
         user.purchased_books.add(Book.objects.get(id=id))
         print(user.balance)
