@@ -28,7 +28,7 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
                           IsOwnerOrReadOnly]
 
 class NewestArticles(generics.ListCreateAPIView):
-    queryset = Article.objects.order_by('-created')[0:10]
+    queryset = Article.objects.order_by('-created')[0:7]
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]                          
 
