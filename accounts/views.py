@@ -12,9 +12,9 @@ class HasNickName(APIView):
 
     def get(self, request):
         if request.user.nickname == None:
-            return Response(False)
+            return Response(data=False,status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response(True)
+            return Response(data=True,status=status.HTTP_200_OK)
         
 
 class GetBalance(APIView):
