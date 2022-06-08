@@ -7,6 +7,16 @@ from pytz import unicode
 
 from .serializers import UserSerializer, AuthCustomTokenSerializer
 
+class HasNickName(APIView):
+    permission_classes = (IsAuthenticated,)  
+
+    def get(self, request):
+        if request.user.nickname == None:
+            return Response(False)
+        else:
+            return Response(True)
+        
+
 class GetBalance(APIView):
     permission_classes = (IsAuthenticated,)  
 
