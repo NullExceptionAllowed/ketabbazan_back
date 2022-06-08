@@ -8,7 +8,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
 
     def get_image(self, obj):
-        return "http://94.101.185.252" + obj.image.url
+        return "https://api.ketabbazan.ml" + obj.image.url
 
     class Meta:
         model = Article
