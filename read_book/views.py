@@ -87,6 +87,22 @@ class NewestBooks(APIView):
             ans.append(data)
         return Response(ans)
 
+class MostScoreBooks(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        books = [book for book in Book.objects.all()]
+        books.sort(key = lambda x : x.average_rate(), reverse=True)
+        ans = []
+        for book in books[:10]:
+            book_serializer = BookInfoSerializer(instance=book)
+            data = book_serializer.data
+            data['id'] = book.id
+            data['author'] = book.getwriters()
+            ans.append(data)
+        return Response(ans)    
+
 class PDFRetrieval(APIView):
     permission_classes = (IsAuthenticated,)
 
