@@ -7,6 +7,14 @@ from pytz import unicode
 
 from .serializers import UserSerializer, AuthCustomTokenSerializer
 
+class HasRead(APIView):
+    permission_classes = (IsAuthenticated,)  
+    def get(self, request, book_id):
+        if request.user.past_read.filter(id=book_id).count() == 0:
+            return Response(data=False,status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response(data=True,status=status.HTTP_200_OK)
+
 class HasNickName(APIView):
     permission_classes = (IsAuthenticated,)  
 
