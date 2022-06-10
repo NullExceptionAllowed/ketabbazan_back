@@ -30,6 +30,12 @@ class GenerateQuiz(APIView):
 
         if (Question.objects.filter(book=book_id).count() == 0):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if (request.user.past_read.filter(id=book_id).count() == 0 and
+            request.user.cur_read.filter(id=book_id).count() == 0 and
+            request.user.favourite.filter(id=book_id).count() == 0 and
+            request.user.left_read.filter(id=book_id).count() == 0):
+            return Response(status=status.HTTP_403_FORBIDDEN)
         
         queryset = Question.objects.filter(book=book_id).order_by('?')[:5]
 
