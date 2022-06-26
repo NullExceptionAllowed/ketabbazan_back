@@ -1,5 +1,6 @@
 from django.urls import path, include
-
+from .views import ResetPassword, ResetPasswordConfirm
 urlpatterns = [
-    path('', include('django_rest_passwordreset.urls',  namespace='password_reset'))
+    path('', ResetPassword.as_view()),
+    path('confirm/', ResetPasswordConfirm.as_view())
 ]
