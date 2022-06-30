@@ -46,3 +46,12 @@ class CreateArticle(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MyArticles(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ArticleSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        return Article.objects.filter(owner=user)
