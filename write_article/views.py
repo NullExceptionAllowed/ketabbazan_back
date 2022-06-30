@@ -1,6 +1,6 @@
 from write_article.models import Article
 from rest_framework import generics, status
-from .serializers import ArticleSerializer
+from .serializers import ArticleSerializer, ArticleSerializerUpload
 from rest_framework.response import Response
 from rest_framework import permissions
 from write_article.permissions import IsOwnerOrReadOnly
@@ -37,7 +37,7 @@ class CreateArticle(APIView):
     
     def post(self, request, format=None):
         print(request.data)
-        serializer = ArticleSerializer(data=request.data)
+        serializer = ArticleSerializerUpload(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
             latestarticle = Article.objects.latest('id')
