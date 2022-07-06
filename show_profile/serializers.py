@@ -25,11 +25,14 @@ class BookInfoSerializer2(BookInfoSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.nickname')
     image = serializers.SerializerMethodField()
+    owner_image = serializers.SerializerMethodField()
     class Meta:
         model = Article
-        fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id']
+        fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id', 'owner_image']
     def get_image(self, article):
         return "https://api.ketabbazan.ml" + article.image.url
+    def get_owner_image(self, article):
+        return "https://api.ketabbazan.ml/profile/getimage/?username=" + article.owner.username
 
 class Publicprofileserializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField('get_profile')
