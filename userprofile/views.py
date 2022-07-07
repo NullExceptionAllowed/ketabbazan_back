@@ -26,6 +26,10 @@ class Profileimage(generics.RetrieveAPIView):
         return Response(image, content_type='image/jpeg')
 
     def post(self,request):
+        try:
+            i=request.FILES['image']
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         if (request.user.profile.image != "profileimages/default.jpg"):
             os.remove(f"media/profileimages/{request.user.username}.jpg")
 
