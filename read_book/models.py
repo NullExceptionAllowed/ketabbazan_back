@@ -47,17 +47,16 @@ class Book(models.Model):
         for comment in all_comments:
             result.append({"id": comment.id,
                            "comment_text": comment.comment_text,
-                           "user": comment.user.username if comment.user.nickname is None else comment.user.nickname,
+                           "user": comment.user.username,
                            "user_id": comment.user.id,
                            "created_on": comment.created_on,
                            "reply": []
                            })
             for reply in comment.replycomment_set.all():
                 result[i]['reply'].append({"reply_text": reply.reply_text,
-                                           "user": reply.user.username if reply.user.nickname is None
-                                           else reply.user.nickname,
+                                           "user": reply.user.username,
                                            "created_on": reply.created_on,
-                                           "reply_user_id":reply.user.id
+                                           "reply_user_id": reply.user.id
                                            })
             i += 1
         return result
