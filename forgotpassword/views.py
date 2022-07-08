@@ -38,8 +38,8 @@ def _unicode_ci_compare(s1, s2):
     return normalized1.casefold() == normalized2.casefold()
 
 def password_reset_token_created(sender, reset_password_token, *args, **kwargs):
-    print("i get signal1")
-    email_plaintext_message = f"?token={reset_password_token.key}"
+    text = "با سلام برای بازیابی رمز عبور روی لینک زیر کلیک کنید."
+    email_plaintext_message = f"{text}      http://ketabbazan.ml/forgetpass?token={reset_password_token.key}"
     send_mail(
             # title:
             "Password Reset for {title}".format(title="Some website title"),
