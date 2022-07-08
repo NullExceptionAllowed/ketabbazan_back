@@ -130,8 +130,8 @@ DATABASES = {
        'NAME': 'projdb',
        'HOST': 'localhost',
        'USER': 'postgres',
-       'PASSWORD': 'admin2000',
-       #'PASSWORD': 'postgres',
+       # 'PASSWORD': 'admin2000',
+       'PASSWORD': 'postgres',
        'PORT': '5432',
    }
  }
