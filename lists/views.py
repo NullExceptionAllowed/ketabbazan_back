@@ -92,7 +92,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 class get_pastread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookInfoSerializer2
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
         return self.request.user.past_read.all()
@@ -103,7 +103,7 @@ class get_pastread(viewsets.ModelViewSet):
 class get_curread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookInfoSerializer2
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
         return self.request.user.cur_read.all()
@@ -114,7 +114,7 @@ class get_curread(viewsets.ModelViewSet):
 class get_favourite(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookInfoSerializer2
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
         return self.request.user.favourite.all()
@@ -125,7 +125,7 @@ class get_favourite(viewsets.ModelViewSet):
 class get_leftread(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookInfoSerializer2
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticated, ]
     def get_queryset(self):
         return self.request.user.left_read.all()
