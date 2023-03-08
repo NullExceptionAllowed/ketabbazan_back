@@ -50,7 +50,9 @@ class Book(models.Model):
                            "user": comment.user.username,
                            "user_id": comment.user.id,
                            "created_on": comment.created_on,
-                           "reply": []
+                           "reply": [],
+                           "like": comment.like.count(),
+                           "dislike": comment.dislike.count()
                            })
             for reply in comment.replycomment_set.all():
                 result[i]['reply'].append({"reply_text": reply.reply_text,
