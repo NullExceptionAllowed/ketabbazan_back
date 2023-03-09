@@ -61,7 +61,10 @@ class LikeComment(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if comment.dislike.all().filter(id=self.request.user.id).exists():
             comment.dislike.remove(self.request.user)
-        comment.like.add(self.request.user)
+        if comment.like.all().filter(id=self.request.user.id).exists():
+            comment.like.remove(self.request.user)
+        else:
+            comment.like.add(self.request.user)
         return Response(status=status.HTTP_200_OK)
 
 
@@ -76,5 +79,8 @@ class DislikeComment(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if comment.like.all().filter(id=self.request.user.id).exists():
             comment.like.remove(self.request.user)
-        comment.dislike.add(self.request.user)
+        if comment.dislike.all().filter(id=self.request.user.id).exists():
+            comment.dislike.remove(self.request.user)
+        else:
+            comment.dislike.add(self.request.user)
         return Response(status=status.HTTP_200_OK)
