@@ -6,6 +6,8 @@
 
 core/settings.py
 
+data
+
 .idea
 
 /media
