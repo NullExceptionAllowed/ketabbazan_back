@@ -7,6 +7,9 @@ from rest_framework import status
 from comments.serializers import Commentserializer, Allcommentsserializer, Replyserializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from read_book.models import Book
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
+from accounts.models import User
 
 
 class Commentapi(APIView):
@@ -49,5 +52,17 @@ class Replytocomment(APIView):
         return Response(data=result, status=status.HTTP_200_OK)
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 8
+    page_size_query_param = 'page_size'
+    max_page_size = 10
 
 
+class UserComments(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = Commentserializer
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username')
+        return Comment.objects.filter(user__username=username).order_by('-created_on')[:50]
