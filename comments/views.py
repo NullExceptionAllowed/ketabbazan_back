@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from read_book.models import Book
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
-from accounts.models import User
+from show_profile.models import UserActivity
 
 
 class Commentapi(APIView):
@@ -18,7 +18,9 @@ class Commentapi(APIView):
         request.data['user'] = request.user.id
         ser_comment = Commentserializer(data=request.data)
         if ser_comment.is_valid():
-            ser_comment.save()
+            comment = ser_comment.save()
+            user_activity = UserActivity()
+            user_activity.create(request.user, 'comment', comment.id)
             return Response(ser_comment.data, status=status.HTTP_200_OK)
         else:
             return Response(ser_comment.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -36,7 +38,9 @@ class Replytocomment(APIView):
         request.data['user'] = request.user.id
         ser_reply = Replyserializer(data=request.data)
         if ser_reply.is_valid():
-            ser_reply.save()
+            reply = ser_reply.save()
+            user_activity = UserActivity()
+            user_activity.create(self.request.user, 'reply', reply.id)
             return Response(ser_reply.data, status=status.HTTP_200_OK)
         else:
             return Response(ser_reply.errors, status=status.HTTP_400_BAD_REQUEST)
