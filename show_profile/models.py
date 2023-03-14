@@ -5,7 +5,13 @@ from accounts.models import User
 
 
 class UserActivity(models.Model):
-    user = models.ManyToOneRel(User, on_delete=models.CASCADE())
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now=True)
     type = models.CharField(max_length=10)
     action_id = models.IntegerField()
+
+    def create(self, user, type, action_id):
+        self.user = user
+        self.type = type
+        self.action_id = action_id
+        self.save()
