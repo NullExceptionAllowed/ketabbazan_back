@@ -10,6 +10,7 @@ from read_book.models import Book
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 from show_profile.models import UserActivity
+from django.db.models import Q
 
 
 class Commentapi(APIView):
@@ -84,10 +85,13 @@ class LikeComment(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if comment.dislike.all().filter(id=self.request.user.id).exists():
             comment.dislike.remove(self.request.user)
+            UserActivity.objects.get(Q(user=self.request.user) & Q(type='dislike') & Q(action_id=comment.id)).delete()
         if comment.like.all().filter(id=self.request.user.id).exists():
             comment.like.remove(self.request.user)
+            UserActivity.objects.get(Q(user=self.request.user) & Q(type='like') & Q(action_id=comment.id)).delete()
         else:
             comment.like.add(self.request.user)
+            UserActivity().create(self.request.user, 'like', comment.id)
         return Response(status=status.HTTP_200_OK)
 
 
@@ -102,9 +106,12 @@ class DislikeComment(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if comment.like.all().filter(id=self.request.user.id).exists():
             comment.like.remove(self.request.user)
+            UserActivity.objects.get(Q(user=self.request.user) & Q(type='like') & Q(action_id=comment.id)).delete()
         if comment.dislike.all().filter(id=self.request.user.id).exists():
             comment.dislike.remove(self.request.user)
+            UserActivity.objects.get(Q(user=self.request.user) & Q(type='dislike') & Q(action_id=comment.id)).delete()
         else:
             comment.dislike.add(self.request.user)
+            UserActivity().create(self.request.user, 'dislike', comment.id)
         return Response(status=status.HTTP_200_OK)
 
