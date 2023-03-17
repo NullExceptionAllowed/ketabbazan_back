@@ -4,6 +4,7 @@ from userprofile.serializers import AccountProfileserializer
 from write_article.models import Article
 from read_book.serializers import BookInfoSerializer
 from read_book.models import Book
+from .models import UserActivity
 #from write_article.serializers import ArticleSerializer
 
 
@@ -62,4 +63,10 @@ class Publicprofileserializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('profile', 'read_books', 'user_articles')
+
+
+class UserActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserActivity
+        fields = '__all__'
 
