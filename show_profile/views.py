@@ -86,7 +86,7 @@ class GetAllActivity(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         responses = super().list(request, *args, **kwargs)
-        new_data = responses.data
+        new_data = responses.data['results']
         for response in new_data:
             activity_type = response['type']
             if activity_type == 'comment' or activity_type == 'like' or activity_type == 'dislike':
@@ -95,5 +95,5 @@ class GetAllActivity(generics.ListAPIView):
                 response['detail'] = Replyserializer(Replycomment.objects.get(id=response['action_id'])).data
             elif activity_type == 'article':
                 response['detail'] = ArticleSerializerUserActivity(Article.objects.get(id=response['action_id'])).data
-        responses.data = new_data
+        responses.data['results'] = new_data
         return responses
