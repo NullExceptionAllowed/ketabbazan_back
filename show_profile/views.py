@@ -26,6 +26,12 @@ class Showprofile(APIView):
         except:
             return Response({"message": "no user with this id"}, status=status.HTTP_400_BAD_REQUEST)
         ser_profile = Publicprofileserializer(user, context={"request":self.request})
+        if not user.profile.public_profile_info:
+            ser_profile.data['profile'] = 'not public'
+        if not user.profile.public_show_read_books:
+            ser_profile.data['read_books'] = 'not public'
+        if not user.profile.public_show_articles:
+            ser_profile.data['user_articles'] = 'not public'
         return Response(ser_profile.data, status=status.HTTP_200_OK)
 
 
