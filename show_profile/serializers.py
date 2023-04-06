@@ -4,7 +4,10 @@ from userprofile.serializers import AccountProfileserializer
 from write_article.models import Article
 from read_book.serializers import BookInfoSerializer
 from read_book.models import Book
+from comments.models import Comment
+from comments.serializers import Commentserializer
 from .models import UserActivity
+from django.db.models import Q
 #from write_article.serializers import ArticleSerializer
 
 
@@ -39,6 +42,7 @@ class Publicprofileserializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField('get_profile')
     read_books = serializers.SerializerMethodField('get_read_books')
     user_articles = serializers.SerializerMethodField('get_user_articles')
+    user_comments = serializers.SerializerMethodField('get_user_comments')
 
     def get_read_books(self, user):
         if user.profile.public_show_read_books:
@@ -60,9 +64,16 @@ class Publicprofileserializer(serializers.ModelSerializer):
         else:
             return user.username
 
+    def get_user_comments(self, user):
+        if user.profile.public_show_activity:
+            return Commentserializer(Comment.objects.filter(user=user), many=True).data
+        else:
+            return "no public"
+
+
     class Meta:
         model = User
-        fields = ('profile', 'read_books', 'user_articles')
+        fields = ('profile', 'read_books', 'user_articles', 'user_comments')
 
 
 class UserActivitySerializer(serializers.ModelSerializer):
