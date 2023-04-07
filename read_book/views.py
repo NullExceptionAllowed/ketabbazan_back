@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Book
+from .models import Book, Genre
 from accounts.models import User
-from .serializers import BookInfoSerializer
+from .serializers import BookInfoSerializer, GenreSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 
 class GenreBooks(APIView):
     authentication_classes = []
@@ -120,4 +121,11 @@ class BookInfoRetrieval(APIView):
         data = book_serializer.data
         data['id'] = book.id
         data['author'] = book.getwriters()
-        return Response({'book_info': data})        
+        return Response({'book_info': data})
+
+
+class AllGenres(ListAPIView):
+    serializer_class = GenreSerializer
+
+    def get_queryset(self):
+        return Genre.objects.all()
