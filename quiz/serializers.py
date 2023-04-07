@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Question
+from accounts.models import User
+from .models import Question, QuizResult, Quiz
+
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,3 +16,9 @@ class QuestionSerializer(serializers.ModelSerializer):
             'ans',
             'book',
         )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'nickname', 'username')
