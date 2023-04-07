@@ -12,7 +12,6 @@ class Comment(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, unique=False)
     book = models.ForeignKey(to=Book, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
-    feature/v0.1.0/commentlike
     like = models.ManyToManyField(User, related_name='like')
     dislike = models.ManyToManyField(User, related_name='dislike')
     
