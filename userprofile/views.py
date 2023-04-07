@@ -74,6 +74,24 @@ class Profileinfo(APIView):
         return Response(ser_profile.data, status=status.HTTP_200_OK)
 
 
+class UserInfo(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = AccountProfileserializer
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username')
+        user = User.objects.filter(username=username)
+        return user
+
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        user = self.get_queryset().first()
+        if user.profile.public_profile_info:
+            return response
+        else:
+            return Response(data={'message': 'not public profile info'}, status=status.HTTP_403_FORBIDDEN)
+
+
 class Imageprofile(APIView):
     permission_classes = [IsAuthenticated, ]
 
@@ -136,3 +154,45 @@ class Profileimagefinale(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         image = user.profile.image
         return Response(image, content_type='image/jpeg')
+
+
+class PublicProfileInfoChange(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        user = self.request.user
+        user.profile.public_profile_info = not user.profile.public_profile_info
+        user.profile.save()
+        return Response(data={"message": f"public profile info is {self.request.user.profile.public_profile_info}"},
+                        status=status.HTTP_200_OK)
+
+
+class PublicShowArticleChange(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        self.request.user.profile.public_show_articles = not self.request.user.profile.public_show_articles
+        self.request.user.profile.save()
+        return Response(data={"message": f"public show article is {self.request.user.profile.public_show_articles}"},
+                        status=status.HTTP_200_OK)
+
+
+class PublicShowReadBooksChange(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        self.request.user.profile.public_show_read_books = not self.request.user.profile.public_show_read_books
+        self.request.user.profile.save()
+        return Response(data={"message": f"public show read books is {self.request.user.profile.public_show_read_books}"},
+                        status=status.HTTP_200_OK)
+
+
+class PublicShowActivityChange(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        self.request.user.profile.public_show_activity = not self.request.user.profile.public_show_activity
+        self.request.user.profile.save()
+        return Response(
+            data={"message": f"public show user activity is {self.request.user.profile.public_show_activity}"},
+            status=status.HTTP_200_OK)
