@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rating',
     'comments',
     'lists',
+    'admin_panel',
     'show_profile',
     'django_rest_passwordreset',
 ]
@@ -130,8 +131,8 @@ DATABASES = {
        'NAME': 'projdb',
        'HOST': 'postgres',
        'USER': 'postgres',
-       # 'PASSWORD': 'admin2000',
-       'PASSWORD': 'postgres',
+       'PASSWORD': 'admin2000',
+       #'PASSWORD': 'postgres',
        'PORT': '5432',
    }
  }

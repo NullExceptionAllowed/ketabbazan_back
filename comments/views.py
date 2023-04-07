@@ -11,6 +11,7 @@ from read_book.models import Book
 
 class Commentapi(APIView):
     permission_classes = [IsAuthenticated, ]
+
     def post(self, request):
         request.data['user'] = request.user.id
         ser_comment = Commentserializer(data=request.data)
@@ -41,7 +42,7 @@ class Replytocomment(APIView):
     def get(self, request):
         comment_id = request.query_params['comment_id']
         comment = Comment.objects.get(id=comment_id)
-        result=[]
+        result = []
         for reply in comment.replycomment_set.all():
             ser_comment = Replyserializer(reply)
             result.append(ser_comment.data)
@@ -49,5 +50,37 @@ class Replytocomment(APIView):
         return Response(data=result, status=status.HTTP_200_OK)
 
 
+class LikeComment(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request):
+        comment_id = self.request.data.get('comment_id')
+        try:
+            comment = Comment.objects.get(id=comment_id)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if comment.dislike.all().filter(id=self.request.user.id).exists():
+            comment.dislike.remove(self.request.user)
+        if comment.like.all().filter(id=self.request.user.id).exists():
+            comment.like.remove(self.request.user)
+        else:
+            comment.like.add(self.request.user)
+        return Response(status=status.HTTP_200_OK)
 
 
+class DislikeComment(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def post(self, request):
+        comment_id = self.request.data.get('comment_id')
+        try:
+            comment = Comment.objects.get(id=comment_id)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if comment.like.all().filter(id=self.request.user.id).exists():
+            comment.like.remove(self.request.user)
+        if comment.dislike.all().filter(id=self.request.user.id).exists():
+            comment.dislike.remove(self.request.user)
+        else:
+            comment.dislike.add(self.request.user)
+        return Response(status=status.HTTP_200_OK)
