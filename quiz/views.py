@@ -1,7 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg
 from requests import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+
+from accounts.models import User
 from quiz.serializers import QuestionSerializer
 from rest_framework import serializers
 from rest_framework.response import Response
@@ -80,33 +83,18 @@ class BestScores(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        try:
-            results = QuizResult.objects.raw("""
-                SELECT
-                    accounts_user.id,
-                    accounts_user.nickname,
-                    profile.fullname,
-                    profile.gender,
-                    profile.image,
-                    SUM((res.score * res.questions_count)/100 ) AS score
-                FROM accounts_user , userprofile_profile as profile ,quiz_quizresult as res
-                WHERE
-                    accounts_user.id = res.user_id
-                    AND
-                    accounts_user.profile_id = profile.id
-                GROUP BY
-                    accounts_user.id,
-                    accounts_user.nickname,
-                    profile.fullname,
-                    profile.gender,
-                    profile.image
-                ORDER BY score DESC
-                LIMIT 30
-            """)
-        except QuizResult.DoesNotExist:
-            results = []
+        results = QuizResult.objects.all().values('user_id').annotate(average_score=Avg('score')).order_by(
+            '-average_score')
+
+        res = []
 
         for result in results:
-            print(result)
+            user = User.objects.get(pk=result['user_id'])
+            res.append({
+                'average_score': result['average_score'],
+                'user_id': user.id,
+                'user_nickname': user.nickname,
+                'user_username': user.username,
+            })
 
-        return Response(results)
+        return Response(res)
