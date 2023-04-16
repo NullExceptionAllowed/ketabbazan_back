@@ -27,3 +27,12 @@ class ShowReceivedGift(ListAPIView):
 
     def get_queryset(self):
         return GiftHistory.objects.filter(receiver=self.request.user).order_by('-date')
+
+
+class ShowSendGift(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = ShowGiftSerializer
+
+    def get_queryset(self):
+        return GiftHistory.objects.filter(sender=self.request.user).order_by('-date')
+
