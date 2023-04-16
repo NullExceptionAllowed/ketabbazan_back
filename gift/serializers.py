@@ -4,28 +4,14 @@ from .models import GiftHistory
 from accounts.models import User
 from read_book.models import Book
 from django.utils.translation import gettext_lazy as _
-
-
-class UserGiftSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', )
-
-
-class BookGiftSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ('id', )
+from read_book.serializers import BookInfoSerializer
 
 
 class GiftHistorySerializer(serializers.ModelSerializer):
-    sender = UserGiftSerializer
-    receiver = UserGiftSerializer
-    book = BookGiftSerializer
 
     class Meta:
         model = GiftHistory
-        fields = ('sender', 'receiver', 'book')
+        fields = ('sender', 'receiver', 'book', 'is_read')
 
     def validate(self, attrs):
         sender = attrs.get('sender')
