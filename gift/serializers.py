@@ -35,3 +35,19 @@ class GiftHistorySerializer(serializers.ModelSerializer):
         sender.purchased_books.remove(book)
         receiver.purchased_books.add(book)
         return super().save(**kwargs)
+
+
+class ShowUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'id')
+
+
+class ShowGiftSerializer(serializers.ModelSerializer):
+    book = BookInfoSerializer()
+    sender = ShowUserSerializer()
+
+    class Meta:
+        model = GiftHistory
+        fields = ('book', 'sender', 'is_read', 'message')
