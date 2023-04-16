@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import GiftHistorySerializer, ShowGiftSerializer
 from rest_framework.generics import ListAPIView
 from .models import GiftHistory
+from django.db.models import Q
 # Create your views here.
 
 
@@ -36,3 +37,12 @@ class ShowSendGift(ListAPIView):
     def get_queryset(self):
         return GiftHistory.objects.filter(sender=self.request.user).order_by('-date')
 
+
+class HasUnreadMessage(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request):
+        result = False
+        if GiftHistory.objects.filter(Q(receiver=self.request.user) & Q(is_read=False)).exists():
+            result = True
+        return Response({"has_unread": result}, status=status.HTTP_200_OK)
