@@ -11,7 +11,7 @@ class GiftHistorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GiftHistory
-        fields = ('sender', 'receiver', 'book', 'is_read')
+        fields = ('sender', 'receiver', 'book', 'is_read', 'message')
 
     def validate(self, attrs):
         sender = attrs.get('sender')

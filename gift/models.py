@@ -9,3 +9,5 @@ class GiftHistory(models.Model):
     receiver = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name='receiver')
     book = models.ForeignKey(to=Book, on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
+    message = models.CharField(max_length=200)
+    date = models.DateTimeField(auto_now=True)
