@@ -129,3 +129,11 @@ class AllGenres(ListAPIView):
 
     def get_queryset(self):
         return Genre.objects.all()
+
+
+class MyPurchasedBooks(ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = BookInfoSerializer
+
+    def get_queryset(self):
+        return self.request.user.purchased_books.all()
