@@ -50,4 +50,4 @@ class ShowGiftSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GiftHistory
-        fields = ('book', 'sender', 'is_read', 'message')
+        fields = ('book', 'sender', 'is_read', 'message', 'id')

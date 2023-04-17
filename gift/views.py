@@ -46,3 +46,14 @@ class HasUnreadMessage(APIView):
         if GiftHistory.objects.filter(Q(receiver=self.request.user) & Q(is_read=False)).exists():
             result = True
         return Response({"has_unread": result}, status=status.HTTP_200_OK)
+
+
+class MarkMessagesRead(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        gift_id = self.request.data.get('id')
+        gift_object = GiftHistory.objects.get(id=gift_id)
+        gift_object.is_read = True
+        gift_object.save()
+        return Response(status=status.HTTP_200_OK)
