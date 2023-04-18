@@ -5,6 +5,7 @@ from accounts.models import User
 from read_book.models import Book
 from django.utils.translation import gettext_lazy as _
 from read_book.serializers import BookInfoSerializer
+from django.db.models import Q
 
 
 class GiftHistorySerializer(serializers.ModelSerializer):
@@ -25,6 +26,9 @@ class GiftHistorySerializer(serializers.ModelSerializer):
             raise ValidationError(msg)
         if receiver.purchased_books.filter(id=book.id).exists():
             msg = _('receiver already has this book')
+            raise ValidationError(msg)
+        if GiftHistory.objects.filter(Q(sender=receiver) & Q(receiver=sender) & Q(book=book)).exists():
+            msg = _('You can send this book to this user because he send it to you as a gift')
             raise ValidationError(msg)
         return attrs
 
