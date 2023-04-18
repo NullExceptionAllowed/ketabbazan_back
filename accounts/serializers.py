@@ -75,3 +75,10 @@ class AuthCustomTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class SearchUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
+
