@@ -13,5 +13,5 @@ urlpatterns = [
     path('balance/', GetBalance.as_view()),
     path('has_nickname/', HasNickName.as_view()),
     path('has_read/<int:book_id>', HasRead.as_view()),
-    path('serachuser/', SearchUser.as_view()),
+    path('searchuser/', SearchUser.as_view()),
 ]
