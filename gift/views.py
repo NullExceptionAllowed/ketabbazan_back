@@ -53,7 +53,18 @@ class MarkMessagesRead(APIView):
 
     def put(self, request):
         gift_id = self.request.data.get('id')
-        gift_object = GiftHistory.objects.get(id=gift_id)
+        try:
+            gift_object = GiftHistory.objects.get(Q(id=gift_id) & Q(receiver=self.request.user))
+        except:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         gift_object.is_read = True
         gift_object.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class MarkAllAsRead(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request):
+        GiftHistory.objects.filter(receiver=self.request.user).update(is_read=True)
         return Response(status=status.HTTP_200_OK)
