@@ -11,6 +11,7 @@ class Profile(models.Model):
     public_profile_info = models.BooleanField(default=True)
     public_show_articles = models.BooleanField(default=True)
     public_show_read_books = models.BooleanField(default=True)
+    public_show_activity = models.BooleanField(default=True)
 
     def __str__(self):
         try:

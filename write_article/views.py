@@ -6,6 +6,8 @@ from rest_framework import permissions
 from write_article.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
 from jalali_date import datetime2jalali
+from show_profile.models import UserActivity
+
 
 class ArticleList(generics.ListCreateAPIView):
     queryset = Article.objects.all()
@@ -43,6 +45,7 @@ class CreateArticle(APIView):
             latestarticle = Article.objects.latest('id')
             latestarticle.created_jalali = datetime2jalali(latestarticle.created).strftime('14%y/%m/%d')
             latestarticle.save()
+            UserActivity().create(self.request.user, 'article', latestarticle.id)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

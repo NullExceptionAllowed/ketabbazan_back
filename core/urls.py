@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('admin-panel/', include('admin_panel.urls')),
     path('accounts/', include('accounts.urls')),
     path('read_book/', include('read_book.urls')),
     path('profile/', include('userprofile.urls')),
@@ -33,6 +34,7 @@ urlpatterns = [
     path('showprofile/', include('show_profile.urls')),
     path('quiz/', include('quiz.urls')),
     path('resetpassword/', include(('forgotpassword.urls', 'forgotpassword') , namespace='forgotpassword')),
+    path('gift/', include('gift.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -27,3 +27,9 @@ class ArticleSerializerUpload(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['id', 'title', 'image', 'book', 'created_jalali', 'body', 'summary', 'owner', 'owner_id']
+
+
+class ArticleSerializerUserActivity(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'image', 'book', 'summary', 'owner', 'owner_id', 'owner_image']

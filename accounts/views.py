@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from pytz import unicode
-
-from .serializers import UserSerializer, AuthCustomTokenSerializer
+from .models import User
+from .serializers import UserSerializer, AuthCustomTokenSerializer, SearchUserSerializer
 
 class HasRead(APIView):
     permission_classes = (IsAuthenticated,)  
@@ -87,6 +87,17 @@ class ObtainAuthToken(APIView):
         content = {
             'token': unicode(token.key),
             'nickname': user.nickname,
+            'is_admin': user.is_superuser and user.is_staff,
         }
 
         return Response(content)
+
+
+class SearchUser(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = SearchUserSerializer
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username')
+        return User.objects.filter(username__contains=username)
+
